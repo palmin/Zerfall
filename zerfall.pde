@@ -1,7 +1,7 @@
-
+import processing.sound.*;
 PImage bitmap, background, start, open, zombie;
 boolean[] keys;
-
+SoundFile gunSounds[];
 playerClass player;
 
 void setup() {
@@ -13,9 +13,11 @@ void setup() {
   background = loadImage("bunker-map.png");
   start = loadImage("bunker-startmap.png");
   open = loadImage("bunker-openmap.png");
+  zombie = loadImage("zombie-temp.png");
 
   image(background, 0, 0);
 
+  gunSounds = new SoundFile[18];
   player = new playerClass();
   keys = new boolean[8];
   for ( int i = 0; i < 8; i++ ) {
@@ -82,7 +84,18 @@ class playerClass {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
         if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
-          collision[0] = true;
+          collision[1] = true;
+          if (c == color(0, 0, 255)) {
+            collision[0] = true;
+          }
+        }
+      }
+    }
+    for (int x = xpos; x <= xpos + 175; x++) {
+      for (int y = ypos; y <= ypos - 1 - abs(yspeed); y++) {
+        c = bitmap.get(x, y);
+        if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
+          collision[1] = true;
         }
       }
     }
@@ -119,36 +132,41 @@ for(x = xpos + 175; x <= xpos + 175 + 5; x++) {
 
   void display() {
     image(background.get(xpos, ypos, 175, 161), xpos, ypos);
-    
+
     if (keys[0] == true && collision[2] == false) {
       xpos -= 5;
-      if (collision[0] == true) {
+      if (collision[1] == true) {
         sprite = 0;
       }
     }
-    
+
     if (keys[1] == true && collision[3] == false) {
       xpos += 5;
-      if (collision[0] == true) {
+      if (collision[1] == true) {
         sprite = 2;
       }
     }
-    
-    if (keys[2] == true && collision[0] == true) {
+
+    if (keys[2] == true && collision[1] == true) {
       yspeed = -10;
-      collision[0] = false;
+      collision[1] = false;
       if (sprite % 2 == 0) {
         sprite += 1;
       }
     }
-    
-    if (collision[0] == false) {
+
+    if (collision[1] == false) {
       ypos += yspeed;
       yspeed ++;
-    } else {
+    }
+    if (collision[0] == true) {
+      yspeed = -4;
+      ypos -= 7;
+    } else if (collision[1] == true && collision[0] == false) {
       yspeed = 1;
     }
-    
+
+
     image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
   }
 }
