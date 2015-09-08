@@ -102,10 +102,10 @@ class playerClass {
     for(x = xpos - 5; x <= xpos; x++) {
    for(y = ypos; y<= ypos + 161; y++) {   
       color c = bitmap.get(x,y); 
-      if(c == color(255,0,0) or c == color(0,0,0)) {
+      if(c == color(255,0,0) || c == color(0,0,0)) {
          collision[3] = true;         
       }
-      if (c == color(255,0,0) and keys[4] == true) {
+      if (c == color(255,0,0) && keys[4] == true) {
          doorx = x;
          doory = y;
       }
@@ -115,10 +115,10 @@ class playerClass {
 for(x = xpos + 175; x <= xpos + 175 + 5; x++) {
    for(y = ypos; y<= ypos + 161; y++) {   
       color c = bitmap.get(x,y); 
-      if(c == color(255,0,0) or c == color(0,0,0)) {
+      if(c == color(255,0,0) || c == color(0,0,0)) {
          collision[4] = true;         
       }
-      if (c == color(255,0,0) and keys[4] == true) {
+      if (c == color(255,0,0) && keys[4] == true) {
          doorx = x;
          doory = y;
       }
