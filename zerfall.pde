@@ -56,14 +56,16 @@ void keyReleased() {
   }
   if (key == 'E' || key == 'e') {
     keys[4] = false;
+  }
 }
-
 class playerClass {
   PImage sheet;
   int sprite;
   int xpos;
   int ypos;
   int yspeed;
+  int doorx;
+  int doory;
   boolean[] collision;
   color c = color(0, 0, 0);
 
@@ -99,33 +101,33 @@ class playerClass {
         }
       }
     }
-    for(x = xpos - 5; x <= xpos; x++) {
-   for(y = ypos; y<= ypos + 161; y++) {   
-      color c = bitmap.get(x,y); 
-      if(c == color(255,0,0) || c == color(0,0,0)) {
-         collision[3] = true;         
+    for (int x = xpos - 5; x <= xpos; x++) {
+      for (int y = ypos; y<= ypos + 161; y++) {   
+        color c = bitmap.get(x, y); 
+        if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
+          collision[3] = true;
+        }
+        if (c == color(255, 0, 0) && keys[4] == true) {
+          doorx = x;
+          doory = y;
+        }
       }
-      if (c == color(255,0,0) && keys[4] == true) {
-         doorx = x;
-         doory = y;
-      }
-   }   
-}
+    }
 
-for(x = xpos + 175; x <= xpos + 175 + 5; x++) {
-   for(y = ypos; y<= ypos + 161; y++) {   
-      color c = bitmap.get(x,y); 
-      if(c == color(255,0,0) || c == color(0,0,0)) {
-         collision[4] = true;         
+    for (int x = xpos + 175; x <= xpos + 175 + 5; x++) {
+      for (int y = ypos; y<= ypos + 161; y++) {   
+        color c = bitmap.get(x, y); 
+        if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
+          collision[4] = true;
+        }
+        if (c == color(255, 0, 0) && keys[4] == true) {
+          doorx = x;
+          doory = y;
+        }
       }
-      if (c == color(255,0,0) && keys[4] == true) {
-         doorx = x;
-         doory = y;
-      }
-   }   
-}
+    }
 
-    
+
     println(collision);
   }
 
