@@ -42,6 +42,9 @@ void keyPressed() {
   if (key == 'W' || key == 'w') {
     keys[2] = true;
   }
+  if (key == 'E' || key == 'e') {
+    keys[4] = true;
+  }
 }
 
 void keyReleased() {
@@ -82,7 +85,7 @@ class playerClass {
     for (int i = 0; i < 5; i++) {
       collision[i] = false;
     }
-    for (int x = xpos; x <= xpos + 175; x++) {
+    for (int x = xpos + 25; x <= xpos + 145; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
         if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
@@ -93,7 +96,7 @@ class playerClass {
         }
       }
     }
-    for (int x = xpos; x <= xpos + 175; x++) {
+    for (int x = xpos + 25; x <= xpos + 145; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y++) {
         c = bitmap.get(x, y);
         if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
@@ -101,7 +104,7 @@ class playerClass {
         }
       }
     }
-    for (int x = xpos - 5; x <= xpos; x++) {
+    for (int x = xpos + 20; x <= xpos + 25; x++) {
       for (int y = ypos; y<= ypos + 161; y++) {   
         color c = bitmap.get(x, y); 
         if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
@@ -114,7 +117,7 @@ class playerClass {
       }
     }
 
-    for (int x = xpos + 175; x <= xpos + 175 + 5; x++) {
+    for (int x = xpos + 145; x <= xpos + 150; x++) {
       for (int y = ypos; y<= ypos + 161; y++) {   
         color c = bitmap.get(x, y); 
         if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
@@ -135,14 +138,14 @@ class playerClass {
   void display() {
     image(background.get(xpos, ypos, 175, 161), xpos, ypos);
 
-    if (keys[0] == true && collision[2] == false) {
+    if (keys[0] == true && collision[3] == false) {
       xpos -= 5;
       if (collision[1] == true) {
         sprite = 0;
       }
     }
 
-    if (keys[1] == true && collision[3] == false) {
+    if (keys[1] == true && collision[4] == false) {
       xpos += 5;
       if (collision[1] == true) {
         sprite = 2;
