@@ -34,16 +34,19 @@ void draw() {
 
 void keyPressed() {
   if (key == 'A' || key == 'a') {
-    keys[0] = true;
+    keys[0] = true; //checks the A key, which controls movement to the left
   }
   if (key == 'D' || key == 'd') {
-    keys[1] = true;
+    keys[1] = true; //checks the D key, which controls movement to the right
   }
   if (key == 'W' || key == 'w') {
-    keys[2] = true;
+    keys[2] = true; //checks the W key, which controls climbing and jumping
+  }
+  if (key == 'S' || key == 's') {
+    keys[3] = true; //checks the S key, an arbitrary check at the moment
   }
   if (key == 'E' || key == 'e') {
-    keys[4] = true;
+    keys[4] = true; //checks the E key, which controls interaction with environment
   }
 }
 
