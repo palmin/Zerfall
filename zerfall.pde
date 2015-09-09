@@ -3,6 +3,7 @@ PImage bitmap, background, start, open, zombie;
 boolean[] keys;
 SoundFile gunSounds[];
 playerClass player;
+int[] doors;
 
 void setup() {
   fullScreen();
@@ -20,6 +21,9 @@ void setup() {
   gunSounds = new SoundFile[18];
   player = new playerClass();
   keys = new boolean[8];
+  doors[] stuff = loadStrings("Resources/bunker-rooms.dat");
+  doors = int(split(stuff[0],','));
+
   for ( int i = 0; i < 8; i++ ) {
     keys[i] = false;
   }
@@ -170,6 +174,16 @@ class playerClass {
     } else if (collision[1] == true && collision[0] == false) {
       yspeed = 1;
     }
+
+void doors() {
+  for (i = 0; i <=20; i += 4) {
+    if (doorx >= doors(i) AND doorx <= doors(i + 3) AND doory >= doors(i + 2) AND doory <= doors(i + 4)) {
+        l = i;
+        break;
+    }
+  }
+  image(open.get(doors(l) - 2, doors(l + 1), 7, doors(l + 3) - doors(l + 1)), doors(l) - 2, doors(l + 1))
+}
 
 
     image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
