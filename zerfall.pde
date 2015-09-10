@@ -17,7 +17,7 @@ void setup() {
   open = loadImage("bunker-openmap.png");
   zombie = loadImage("zombie-temp.png");
 
-  image(background, 0, 0);
+  image(background, 0, 0, width, height);
 
   gunSounds = new SoundFile[18];
   player = new playerClass();
@@ -85,8 +85,10 @@ class playerClass {
 
   playerClass() {
     sheet = loadImage("player-sheet.png");
-    xpos = 1136;
-    ypos = 470;
+    xpos = int(1136);
+    ypos = int(470);
+    println(xpos);
+    println(ypos);
     sprite = 0;
     doorx = -1;
     doory = -1;
@@ -145,7 +147,7 @@ class playerClass {
     }
 
 
-    println(collision);
+    //println(collision);
   }
 
   void doors() {
