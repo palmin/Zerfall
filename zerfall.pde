@@ -1,6 +1,8 @@
 import processing.sound.*;
 PImage bitmap, background, start, open, zombie;
 boolean[] keys;
+String[] stuff;
+int[] doors;
 SoundFile gunSounds[];
 playerClass player;
 
@@ -16,11 +18,13 @@ void setup() {
   zombie = loadImage("zombie-temp.png");
 
   image(background, 0, 0);
-
+  
   gunSounds = new SoundFile[18];
   player = new playerClass();
   keys = new boolean[8];
-  for ( int i = 0; i < 8; i++ ) {
+  stuff = loadStrings("Resources/bunker-rooms.dat");
+  doors = int(split(stuff[0], ','));
+  for (int i = 0; i < 8; i++ ) {
     keys[i] = false;
   }
 }
@@ -72,6 +76,7 @@ class playerClass {
   int yspeed;
   int doorx;
   int doory;
+  int l;
   boolean[] collision;
   color c = color(0, 0, 0);
 
@@ -137,6 +142,20 @@ class playerClass {
     println(collision);
   }
 
+  void doors() {
+    for (int i = 0; i <=20; i += 4) {
+      if (doorx >= doors[i] && doorx <= doors[i + 3] && doory >= doors[i + 2] && doory <= doors[i + 4]) {
+        l = i;
+        break;
+      }
+    }
+    image(open.get(doors[l] - 2, doors[l + 1], 7, doors[l + 3] - doors[l + 1]), doors[l] - 2, doors[l + 1]);
+    for (int x = doors[1]; x <= doors[l + 2]; x ++) {
+      for (int y = doors[l + 1]; y <= doors[l + 3]; y++) {
+        bitmap.set(x, y, color(255));
+      }
+    }
+  }
 
   void display() {
     image(background.get(xpos, ypos, 175, 161), xpos, ypos);
