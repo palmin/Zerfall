@@ -18,7 +18,7 @@ void setup() {
   zombie = loadImage("zombie-temp.png");
 
   image(background, 0, 0);
-  
+
   gunSounds = new SoundFile[18];
   player = new playerClass();
   keys = new boolean[8];
@@ -31,6 +31,9 @@ void setup() {
 
 void draw() {
   player.collision();
+  if (player.doorx != -1) {
+    player.doors();
+  }
   player.display();
 }
 
@@ -85,6 +88,8 @@ class playerClass {
     xpos = 1136;
     ypos = 470;
     sprite = 0;
+    doorx = -1;
+    doory = -1;
     yspeed = 1;
     collision = new boolean[5];
   }
@@ -93,6 +98,7 @@ class playerClass {
     for (int i = 0; i < 5; i++) {
       collision[i] = false;
     }
+    doorx = doory = -1;
     for (int x = xpos + 25; x <= xpos + 145; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
