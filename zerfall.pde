@@ -7,8 +7,8 @@ SoundFile gunSounds[];
 playerClass player;
 
 void setup() {
-  size(1280, 1024);
-  // fullScreen();
+
+  fullScreen();
   background(0);
   frameRate(60);
 
@@ -104,9 +104,9 @@ class playerClass {
         c = bitmap.get(x, y);
         if (c == color(255, 0, 0) || c == color(0, 0, 0)) {
           collision[1] = true;
-          if (c == color(0, 0, 255)) {
-            collision[0] = true;
-          }
+        }
+        if (c == color(0, 0, 255)) {
+          collision[0] = true;
         }
       }
     }
@@ -146,13 +146,13 @@ class playerClass {
   }
   void doors() {
     for (int i = 0; i <=20; i += 4) {
-      if (doorx >= 800 && doorx <= 805 && doory >= 445 && doory <= 445 + 280) {
+      if (doorx >= doors[i] && doorx <= doors[i + 2] && doory >= doors[i + 1] && doory <= doors[i + 3]) {
         l = i;
         break;
       }
     }
-    for (int x = doors[1]; x <= 805; x ++) {
-      for (int y = 445; y <= 445 + 280; y++) {
+    for (int x = doors[l]; x <= doors[l + 2]; x ++) {
+      for (int y = doors[l + 1]; y <= doors[l + 3]; y++) {
         bitmap.set(x, y, color(255));
       }
     }
@@ -183,10 +183,11 @@ class playerClass {
       ypos += yspeed;
       yspeed ++;
     }
-    if (collision[0] == true) {
+    if (collision[0] == true && keys[2] == true) {
       yspeed = -4;
       ypos -= 7;
-    } else if (collision[1] == true && collision[0] == false) {
+    }
+    if (collision[1] == true) {
       yspeed = 1;
     }
     image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
