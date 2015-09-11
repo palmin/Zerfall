@@ -13,7 +13,7 @@ void setup() {
 
   bitmap = loadImage("bunker-bitmap.png");
   background = loadImage("bunker-map.png");
-  start = loadImage("bunker-startmap.png");
+  map = loadImage("bunker-startmap.png");
   open = loadImage("bunker-openmap.png");
   zombie = loadImage("zombie-temp.png");
 
@@ -157,7 +157,7 @@ class playerClass {
         break;
       }
     }
-    image(open.get(doors[l] - 2, doors[l + 1], 7, doors[l + 3] - doors[l + 1]), doors[l] - 2, doors[l + 1]);
+    image(open.get(doors[2 * l] - 2, doors[2 * l + 1], 7, doors[2 * l + 3] - doors[2 * l + 1]), doors[2 * l] - 2, doors[2 * l + 1]);
     for (int x = doors[1]; x <= doors[l + 2]; x ++) {
       for (int y = doors[l + 1]; y <= doors[l + 3]; y++) {
         bitmap.set(x, y, color(255));
