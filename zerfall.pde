@@ -8,7 +8,7 @@ playerClass player;
 
 void setup() {
 
-  fullScreen();
+  fullScreen(P3D);
   background(0);
   frameRate(60);
 
