@@ -2,12 +2,13 @@ import processing.sound.*;
 PImage bitmap, background, start, open, zombie;
 boolean[] keys;
 String[] stuff;
-int[] doors;
+int[] doors, door;
 SoundFile gunSounds[];
 playerClass player;
 
 void setup() {
-  fullScreen();
+  size(1280, 1024);
+  // fullScreen();
   background(0);
   frameRate(60);
 
@@ -17,15 +18,16 @@ void setup() {
   open = loadImage("bunker-openmap.png");
   zombie = loadImage("zombie-temp.png");
 
-  image(background, 0, 0, width, height);
+  image(background, 0, 0);
 
   gunSounds = new SoundFile[18];
   player = new playerClass();
   keys = new boolean[8];
+  door = new int[4];
   stuff = loadStrings("Resources/bunker-rooms.dat");
   doors = int(split(stuff[0], ','));
   for (int i = 0; i < 8; i++ ) {
-    keys[i] = false;
+    keys[i] = false; //clears the key buffer
   }
 }
 
@@ -82,20 +84,16 @@ class playerClass {
   int l;
   boolean[] collision;
   color c = color(0, 0, 0);
-
   playerClass() {
     sheet = loadImage("player-sheet.png");
-    xpos = int(1136);
-    ypos = int(470);
-    println(xpos);
-    println(ypos);
+    xpos = 1136;
+    ypos = 470;
     sprite = 0;
     doorx = -1;
     doory = -1;
     yspeed = 1;
     collision = new boolean[5];
   }
-
   void collision() {
     for (int i = 0; i < 5; i++) {
       collision[i] = false;
@@ -145,26 +143,20 @@ class playerClass {
         }
       }
     }
-
-
-    //println(collision);
   }
-
   void doors() {
     for (int i = 0; i <=20; i += 4) {
-      if (doorx >= doors[i] && doorx <= doors[i + 3] && doory >= doors[i + 2] && doory <= doors[i + 4]) {
+      if (doorx >= 800 && doorx <= 805 && doory >= 445 && doory <= 445 + 280) {
         l = i;
         break;
       }
     }
-    image(open.get(doors[l] - 2, doors[l + 1], 7, doors[l + 3] - doors[l + 1]), doors[l] - 2, doors[l + 1]);
-    for (int x = doors[1]; x <= doors[l + 2]; x ++) {
-      for (int y = doors[l + 1]; y <= doors[l + 3]; y++) {
+    for (int x = doors[1]; x <= 805; x ++) {
+      for (int y = 445; y <= 445 + 280; y++) {
         bitmap.set(x, y, color(255));
       }
     }
   }
-
   void display() {
     image(background.get(xpos, ypos, 175, 161), xpos, ypos);
 
@@ -174,14 +166,12 @@ class playerClass {
         sprite = 0;
       }
     }
-
     if (keys[1] == true && collision[4] == false) {
       xpos += 5;
       if (collision[1] == true) {
         sprite = 2;
       }
     }
-
     if (keys[2] == true && collision[1] == true) {
       yspeed = -10;
       collision[1] = false;
@@ -189,7 +179,6 @@ class playerClass {
         sprite += 1;
       }
     }
-
     if (collision[1] == false) {
       ypos += yspeed;
       yspeed ++;
@@ -200,8 +189,6 @@ class playerClass {
     } else if (collision[1] == true && collision[0] == false) {
       yspeed = 1;
     }
-
-
     image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
   }
 }
