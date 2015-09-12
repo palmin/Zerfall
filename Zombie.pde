@@ -1,22 +1,21 @@
-class playerClass {
+class zombieClass {
   PImage sheet;
-  int spriteDim, sprite, xpos, ypos, yspeed, door[], i, l;
+  int sprite, xpos, ypos, health, yspeed;
   boolean[] collision;
   color c = color(0);
-  playerClass() {
-    sheet = loadImage("player-sheet.png");
-    xpos = 1136;
-    ypos = 470;
+  zombieClass() {
+    sheet = loadImage("temp-zombie.png");
+    //Declare xpos here
+    //Declare ypos here
     sprite = 0;
+    //Declare health here
     yspeed = 1;
     collision = new boolean[5];
-    door = new int[2];
   }
   void collision() {
     for (int i = 0; i < 5; i++) {
       collision[i] = false;
     }
-    door[0] = door[1] = -1;
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
@@ -35,37 +34,14 @@ class playerClass {
         for (int y = ypos; y<= ypos + 161; y++) {   
           c = bitmap.get(x, y); 
           collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
-          if (c == color(255, 0, 0) && keys[4] == true) {
-            door[0] = x;
-            door[1] = y;
-          }
         }
       }
     }
-    if (keys[1] == true || keys[4] == true) {
       for (int x = xpos + 150; x <= xpos + 155; x++) { 
         for (int y = ypos; y<= ypos + 161; y++) {   
           c = bitmap.get(x, y); 
           collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
-          if (c == color(255, 0, 0) && keys[4] == true) {
-            door[0] = x;
-            door[1] = y;
-          }
         }
-      }
-    }
-  }
-  void doors() {
-    l = -1;
-    for (i = 0; i <= 20; i += 4) {
-      if (door[0] >= doors[i] && door[0] <= doors[i + 2] && door[1] >= doors[i + 1] && door[1] <= doors[i + 3]) {
-        l = i;
-        break;
-      }
-    }
-    for (int x = doors[l]; x <= doors[l + 2]; x++) { 
-      for (int y = doors[l + 1]; y < doors[l + 3]; y++) {
-        bitmap.set(x, y, color(255));
       }
     }
   }
