@@ -37,29 +37,25 @@ class zombieClass {
         }
       }
     }
-      for (int x = xpos + 150; x <= xpos + 155; x++) { 
-        for (int y = ypos; y<= ypos + 161; y++) {   
-          c = bitmap.get(x, y); 
-          collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
-        }
+    for (int x = xpos + 150; x <= xpos + 155; x++) { 
+      for (int y = ypos; y<= ypos + 161; y++) {   
+        c = bitmap.get(x, y); 
+        collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
       }
     }
   }
   void movement() {
-    if (keys[0] == true && collision[3] == false) {
+    if (collision[3] == false) {
       xpos -= 5;
-      sprite = (collision[1] == true) ? 0 : sprite;
     }
-    if (keys[1] == true && collision[4] == false) {
+    if (collision[4] == false) {
       xpos += 5;
-      sprite = (collision[1] == true) ? 2 : sprite;
     }
-    if (keys[2] == true && collision[1] == true && collision[2] == false) {
+    if (collision[1] == true && collision[2] == false) {
       yspeed = -10;
       collision[1] = false;
-      sprite += (sprite % 2 == 0) ? 1 : 0;
     }
-    if (collision[0] == true && keys[2] == true && collision[2] == false) {
+    if (collision[0] == true && collision[2] == false) {
       yspeed = -4;
       collision[1] = false;
     }
