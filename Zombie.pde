@@ -4,7 +4,7 @@ class zombieClass {
   boolean[] collision;
   color c = color(0);
   zombieClass() {
-    sheet = loadImage("temp-zombie.png");
+    sheet = loadImage("Sprites/temp-zombie.png");
     //Declare xpos here
     //Declare ypos here
     sprite = 0;

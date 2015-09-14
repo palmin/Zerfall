@@ -4,7 +4,7 @@ class playerClass {
   boolean[] collision;
   color c = color(0);
   playerClass() {
-    sheet = loadImage("player-sheet.png");
+    sheet = loadImage("Sprites/player.png");
     xpos = 1136;
     ypos = 470;
     sprite = 0;

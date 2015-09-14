@@ -1,0 +1,104 @@
+import processing.video.*;
+import processing.sound.*;
+PImage bitmap, map, background;
+boolean[] keys;
+String[] stuff;
+int[] doors, rooms, door;
+SoundFile gunshot[], reload[];
+
+playerClass player;
+
+void setup() {
+  noCursor();
+  fullScreen(P2D);
+  background(0);
+  frameRate(60);
+  bitmap = loadImage("bunker-bitmap.png");
+  map = loadImage("bunker-map.png");
+  background = createImage(2560, 1440, RGB);
+  background.loadPixels();
+  for (int i = 0; i < background.pixels.length; i++) {
+    background.pixels[i] = color(0, 0, 0, i % background.width * 2);
+  }
+  background.updatePixels();
+  for (int x = 800; x < 1510; x++) {
+    for (int y = 440; y < 730; y++) {
+      background.set(x, y, map.get(x, y));
+    }
+  }
+
+
+  gunshot = new SoundFile[18];
+  reload= new SoundFile[18];
+  player = new playerClass();
+  keys = new boolean[8];
+  door = new int[2];
+  stuff = loadStrings("Resources/doors.dat"); 
+  doors = int(split(stuff[0], ','));
+  stuff = loadStrings("Resources/rooms.dat"); 
+  rooms = int(split(stuff[0], ','));
+
+  //for (int i = 1; i < 18; i++) {
+  //  gunshot[i - 1] = new SoundFile(this, "Sounds/" + str(i) + ".ogg"); //Stores the appropriate gunshot sound to the array
+  //  reload[i - 1] = new SoundFile(this, "Sounds/" + str(i) + "-reload.ogg"); //Stores the appropriate reload sound to the array
+  //}
+
+  gunshot[0] = new SoundFile(this, "Sounds/1.ogg"); //AK-47 Gunshot
+  reload[0] = new SoundFile(this, "Sounds/1-reload.ogg"); //AK-47 Reload
+  gunshot[1] = new SoundFile(this, "Sounds/2.ogg"); //AUG Gunshot
+  reload[1] = new SoundFile(this, "Sounds/2-reload.ogg"); //AUG Reload
+  gunshot[2] = new SoundFile(this, "Sounds/3.ogg"); //M9 Gunshot
+  gunshot[3] = new SoundFile(this, "Sounds/4.ogg"); 
+  gunshot[4] = new SoundFile(this, "Sounds/5.ogg");
+  gunshot[5] = new SoundFile(this, "Sounds/6.ogg");
+  reload[5] = new SoundFile(this, "Sounds/6-reload.ogg");
+  gunshot[6] = new SoundFile(this, "Sounds/7.ogg");
+  gunshot[7] = new SoundFile(this, "Sounds/8.ogg");
+  gunshot[8] = new SoundFile(this, "Sounds/9.ogg");
+  reload[8] = new SoundFile(this, "Sounds/9-reload.ogg");
+  gunshot[9] = new SoundFile(this, "Sounds/10.ogg"); 
+  reload[9] = new SoundFile(this, "Sounds/10-reload.ogg");
+  gunshot[11] = new SoundFile(this, "Sounds/12.ogg"); 
+  reload[11] = new SoundFile(this, "Sounds/12-reload.ogg");
+  gunshot[12] = new SoundFile(this, "Sounds/13.ogg"); 
+  reload[12] = new SoundFile(this, "Sounds/13-reload.ogg");
+  gunshot[13] = new SoundFile(this, "Sounds/14.ogg"); 
+  reload[13] = new SoundFile(this, "Sounds/14-reload.ogg");
+  gunshot[14] = new SoundFile(this, "Sounds/15.ogg"); 
+  gunshot[16] = new SoundFile(this, "Sounds/17.ogg"); 
+  reload[16] = new SoundFile(this, "Sounds/17-reload.ogg");
+
+  for (int i = 0; i < 8; i++ ) {
+    keys[i] = false; //clears the key buffer
+  }
+}
+
+
+
+void draw() {
+  image(background, 0, 0);
+  player.collision();
+  if (player.door[0] != -1) {
+    player.doors();
+  }
+  player.movement();
+}
+
+void keyPressed() { //checks key press events and sets keys to true
+  keys[0] = (key == 'A' || key == 'a') ? true : keys[0]; //checks the A key
+  keys[1] = (key == 'D' || key == 'd') ? true : keys[1]; //checks the D key
+  keys[2] = (key == 'W' || key == 'w') ? true : keys[2]; //checks the W key
+  keys[3] = (key == 'S' || key == 's') ? true : keys[3]; //checks the S key
+  keys[4] = (key == 'E' || key == 'e') ? true : keys[4]; //checks the E key
+  keys[5] = (key == 'R' || key == 'r') ? true : keys[5]; //checks the R key
+  keys[6] = (key == ' ') ? true : keys[6]; //checks the spacebar
+}
+void keyReleased() { //checks key release events and sets keys to false
+  keys[0] = (key == 'A' || key == 'a') ? false : keys[0]; //checks the A key
+  keys[1] = (key == 'D' || key == 'd') ? false : keys[1]; //checks the D key
+  keys[2] = (key == 'W' || key == 'w') ? false : keys[2]; //checks the W key
+  keys[3] = (key == 'S' || key == 's') ? false : keys[3]; //checks the S key
+  keys[4] = (key == 'E' || key == 'e') ? false : keys[4]; //checks the E key
+  keys[5] = (key == 'R' || key == 'r') ? false : keys[5]; //checks the R key
+  keys[6] = (key == ' ') ? false : keys[6]; //checks the spacebar
+}
