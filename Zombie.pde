@@ -1,9 +1,10 @@
 class zombieClass {
   PImage sheet;
   int sprite, xpos, ypos, health, yspeed;
+  SoundFile groan, attack;
   boolean[] collision;
   color c = color(0);
-  zombieClass(int health; int spawnLocation, int xspeed) {
+  zombieClass(int xspeed) {
     sheet = loadImage("temp-zombie.png");
     sprite = 0;
     yspeed = 1;
