@@ -45,23 +45,6 @@ class zombieClass {
     }
   }
   void movement() {
-    if (collision[3] == false) {
-      xpos -= 5;
-    }
-    if (collision[4] == false) {
-      xpos += 5;
-    }
-    if (collision[1] == true && collision[2] == false) {
-      yspeed = -10;
-      collision[1] = false;
-    }
-    if (collision[0] == true && collision[2] == false) {
-      yspeed = -4;
-      collision[1] = false;
-    }
-    if (collision[2] == true) {
-      yspeed = 1;
-    }
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
     if (collision[1] == false) {
       ypos += yspeed;
