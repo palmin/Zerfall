@@ -3,12 +3,9 @@ class zombieClass {
   int sprite, xpos, ypos, health, yspeed;
   boolean[] collision;
   color c = color(0);
-  zombieClass() {
+  zombieClass(int health, int spawnx, int spawny) {
     sheet = loadImage("Sprites/temp-zombie.png");
-    //Declare xpos here
-    //Declare ypos here
     sprite = 0;
-    //Declare health here
     yspeed = 1;
     collision = new boolean[5];
   }

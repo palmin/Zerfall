@@ -1,6 +1,6 @@
 import processing.video.*;
 import processing.sound.*;
-PImage bitmap, map, background, foreground;
+PImage bitmap, map, background, foreground, loading;
 boolean[] keys;
 String[] stuff;
 String gunID[];
@@ -12,7 +12,8 @@ playerClass player;
 void setup() {
   noCursor();
   fullScreen(P2D);
-  background(0);
+  loading = loadImage("Images/loading.png");
+  image(loading,0,0);
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
   background = loadImage("Maps/map.png");
@@ -38,7 +39,6 @@ void setup() {
     keys[i] = false; //clears the key buffer
   }
 }
-
 void draw() {
   image(background, 0, 0);
   player.collision();
