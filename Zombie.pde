@@ -1,14 +1,16 @@
 class zombieClass {
   PImage sheet;
-  int sprite, xpos, ypos, health, yspeed;
+  int sprite, xpos, ypos, health, yspeed, xspeed, zombieCache;
   SoundFile groan, attack;
   boolean[] collision;
   color c = color(0);
-  zombieClass(int xspeed) {
+  zombieClass[] zombieList;
+  zombieClass() {
     sheet = loadImage("temp-zombie.png");
     sprite = 0;
     yspeed = 1;
     collision = new boolean[5];
+    zombieList = new zombieClass[1]; 
   }
   void collision() {
     for (int i = 0; i < 5; i++) {
@@ -47,5 +49,11 @@ class zombieClass {
       ypos += yspeed;
     }
     image(sheet.get(sprite * 84, 0, 84, 162), xpos, ypos);
+  }
+  void spawn() {
+    if (zombieList.length < 8 && zombieCache > 0) {
+      zombieCache--;
+      append(zombieList, new zombieClass());
+    }
   }
 }

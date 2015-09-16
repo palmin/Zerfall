@@ -45,6 +45,7 @@ void draw() {
   if (player.door[0] != -1) {
     player.doors();
   }
+  zombieClass.zombie.spawn();
   player.movement();
 }
 
@@ -67,4 +68,8 @@ void keyReleased() { //checks key release events and sets keys to false
   keys[5] = (key == 'R' || key == 'r') ? false : keys[5]; //checks the R key
   keys[6] = (key == ' ') ? false : keys[6]; //checks the spacebar
   keys[7] = (key == ENTER) ? false : keys[7]; //checks the enter key
+}
+
+void roundEnd() {
+  
 }
