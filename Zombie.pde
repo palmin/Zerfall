@@ -10,7 +10,7 @@ class zombieClass {
     sprite = 0;
     yspeed = 1;
     collision = new boolean[5];
-    zombieList = new zombieClass[1]; 
+    zombieList = new zombieClass[1];
   }
   void collision() {
     for (int i = 0; i < 5; i++) {
@@ -44,7 +44,7 @@ class zombieClass {
   }
   void movement() {
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
-    
+
     if (collision[1] == false) {
       ypos += yspeed;
     }

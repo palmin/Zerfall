@@ -1,4 +1,3 @@
-import processing.video.*;
 import processing.sound.*;
 PImage bitmap, map, background, foreground, loading;
 boolean[] keys;
@@ -13,7 +12,7 @@ void setup() {
   noCursor();
   fullScreen(P2D);
   loading = loadImage("Images/loading.png");
-  image(loading,0,0);
+  image(loading, 0, 0);
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
   background = loadImage("Maps/map.png");
@@ -45,7 +44,7 @@ void draw() {
   if (player.door[0] != -1) {
     player.doors();
   }
-  zombieClass.zombie.spawn();
+  player.weapon();
   player.movement();
 }
 
@@ -71,5 +70,4 @@ void keyReleased() { //checks key release events and sets keys to false
 }
 
 void roundEnd() {
-  
 }

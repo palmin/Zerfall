@@ -1,6 +1,6 @@
 class playerClass {
   PImage sheet;
-  int spriteDim, sprite, xpos, ypos, yspeed, door[], i, l;
+  int spriteDim, sprite, xpos, ypos, yspeed, door[], i, l, currentWeapon;
   boolean[] collision;
   color c = color(0);
   playerClass() {
@@ -9,6 +9,7 @@ class playerClass {
     ypos = 470;
     sprite = 0;
     yspeed = 1;
+    currentWeapon = 0;
     collision = new boolean[5];
     door = new int[2];
   }
@@ -95,5 +96,13 @@ class playerClass {
       ypos += yspeed;
     }
     image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
+  }
+  void weapon() {
+    if (keys[7] == true) {
+      currentWeapon = (currentWeapon < 17) ? currentWeapon++ : 0 ;
+    }
+    if (keys[6] == true) {
+      gunshot[currentWeapon].play();
+    }
   }
 }
