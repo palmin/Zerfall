@@ -3,10 +3,11 @@ PImage bitmap, map, background, foreground, loading;
 boolean[] keys;
 String[] stuff;
 String gunID[];
-int[] doors, rooms, door;
+int[] doors, rooms, door, gunRPM, gunClip;
 SoundFile gunshot[], reload[];
 
 playerClass player;
+zombieClass[] zombieList;
 
 void setup() {
   noCursor();
@@ -21,21 +22,29 @@ void setup() {
   gunshot = new SoundFile[18];
   reload = new SoundFile[18];
   player = new playerClass();
+  zombieList = new zombieClass[8];
   keys = new boolean[8];
   door = new int[2];
   stuff = loadStrings("Resources/doors.dat");
   doors = int(split(stuff[0], ','));
   stuff = loadStrings("Resources/rooms.dat");
   rooms = int(split(stuff[0], ','));
-  stuff = loadStrings("Resources/guns.dat");
+  stuff = loadStrings("Resources/gunID.dat");
   gunID = split(stuff[0], ',');
+  stuff = loadStrings("Resources/gunRPM.dat");
+  gunRPM = int(split(stuff[0], ','));
+  stuff = loadStrings("Resources/gunClip.dat");
+  gunClip = int(split(stuff[0], ','));
   for (int i = 0; i < 18; i++) {
     gunshot[i] = new SoundFile(this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
     reload[i] = new SoundFile(this, "Sounds/Guns/" + gunID[i] + " Reload.ogg");
   }
-
   for (int i = 0; i < 8; i++ ) {
     keys[i] = false; //clears the key buffer
+  }
+  int index = 0;
+  for (int i = 0; i < 8; i++) {
+    zombieList[index++] = new zombieClass(int(random(1, 4)));
   }
 }
 void draw() {
@@ -45,6 +54,10 @@ void draw() {
     player.doors();
   }
   player.weapon();
+  for (zombieClass zombie : zombieList) {
+    zombie.collision();
+    zombie.movement();
+  }
   player.movement();
 }
 
@@ -56,7 +69,7 @@ void keyPressed() { //checks key press events and sets keys to true
   keys[4] = (key == 'E' || key == 'e') ? true : keys[4]; //checks the E key
   keys[5] = (key == 'R' || key == 'r') ? true : keys[5]; //checks the R key
   keys[6] = (key == ' ') ? true : keys[6]; //checks the spacebar
-  keys[7] = (key == ENTER) ? true : keys[7]; //checks the enter key
+  keys[7] = (key == RETURN || key == ENTER) ? true : keys[7]; //checks the enter key
 }
 void keyReleased() { //checks key release events and sets keys to false
   keys[0] = (key == 'A' || key == 'a') ? false : keys[0]; //checks the A key
@@ -66,7 +79,7 @@ void keyReleased() { //checks key release events and sets keys to false
   keys[4] = (key == 'E' || key == 'e') ? false : keys[4]; //checks the E key
   keys[5] = (key == 'R' || key == 'r') ? false : keys[5]; //checks the R key
   keys[6] = (key == ' ') ? false : keys[6]; //checks the spacebar
-  keys[7] = (key == ENTER) ? false : keys[7]; //checks the enter key
+  keys[7] = (key == RETURN || key == ENTER) ? false : keys[7]; //checks the enter key
 }
 
 void roundEnd() {

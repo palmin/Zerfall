@@ -4,13 +4,14 @@ class zombieClass {
   SoundFile groan, attack;
   boolean[] collision;
   color c = color(0);
-  zombieClass[] zombieList;
-  zombieClass() {
-    sheet = loadImage("temp-zombie.png");
+  zombieClass(int speed) {
+    sheet = loadImage("Sprites/zombie-temp.png");
+    xpos = player.xpos;
+    ypos = player.ypos;
     sprite = 0;
     yspeed = 1;
+    xspeed = speed;
     collision = new boolean[5];
-    zombieList = new zombieClass[1];
   }
   void collision() {
     for (int i = 0; i < 5; i++) {
@@ -44,16 +45,21 @@ class zombieClass {
   }
   void movement() {
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
-
     if (collision[1] == false) {
       ypos += yspeed;
+    }
+    if (player.xpos + 50 > xpos) {
+      xpos = xpos + xspeed;
+    }
+    if (player.xpos + 50 < xpos) {
+      xpos = xpos - xspeed;
     }
     image(sheet.get(sprite * 84, 0, 84, 162), xpos, ypos);
   }
   void spawn() {
     if (zombieList.length < 8 && zombieCache > 0) {
       zombieCache--;
-      append(zombieList, new zombieClass());
+      append(zombieList, new zombieClass(int(random(1,4))));
     }
   }
 }
