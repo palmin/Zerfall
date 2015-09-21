@@ -48,11 +48,14 @@ class zombieClass {
     if (collision[1] == false) {
       ypos += yspeed;
     }
-    if (player.xpos + 50 > xpos) {
+    if (player.xpos + 50 > xpos && player.ypos > ypos - 20 && player.ypos < ypos + 40) {
       xpos = xpos + xspeed;
-    }
-    if (player.xpos + 50 < xpos) {
+    } else if (player.xpos + 50 < xpos && player.ypos > ypos - 5 && player.ypos < ypos + 5) {
       xpos = xpos - xspeed;
+    }
+    if (collision[0] == true && player.ypos < ypos && collision[2] == false) {
+      yspeed = -xspeed;
+      collision[1] = false;
     }
     image(sheet.get(sprite * 84, 0, 84, 162), xpos, ypos);
   }

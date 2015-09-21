@@ -1,7 +1,9 @@
 class playerClass {
   PImage sheet;
-  int spriteDim, sprite, xpos, ypos, yspeed, door[], i, l, currentWeapon;
+  PFont orbitron;
+  int sprite, xpos, ypos, yspeed, door[], i, l, t, currentWeapon, gunClip;
   boolean[] collision;
+  float len;
   color c = color(0);
   playerClass() {
     sheet = loadImage("Sprites/player.png");
@@ -12,6 +14,8 @@ class playerClass {
     currentWeapon = 0;
     collision = new boolean[5];
     door = new int[2];
+    orbitron = createFont("Fonts/Orbitron.ttf", 72, true);
+    gunClip = 30;
   }
   void collision() {
     for (int i = 0; i < 5; i++) {
@@ -98,10 +102,8 @@ class playerClass {
     image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
   }
   //IF _KEYHIT = 13 THEN
-  //    IF pGun = 18 THEN pGun = 1 ELSE pGun = pGun + 1
   //    pGunshot& = _SNDCOPY(gunSound(pGun, Shot))
   //    pReload& = _SNDCOPY(gunSound(pGun, Reload))
-  //    pClip = gunList(pGun, 1)
   //    ELSEIF pClip = -1 AND _SNDPLAYING(pReload&) = 0 THEN pClip = gunList(pGun, 1)
   //END IF
   //IF LPR < gunList(pGun, 2) AND keySPC = -1 THEN LPR = LPR + 1 ELSE IF LPR >= gunList(pGun, 2) THEN LPR = 1
@@ -124,10 +126,36 @@ class playerClass {
   //IF keySPC = -1 AND lastkeySPC = 0 AND pClip = 0 AND LPR = 1 THEN _SNDPLAY dFire&
   void weapon() {
     if (keys[7] == true) { //If the enter key is pressed
-      currentWeapon = (currentWeapon < 17) ? currentWeapon++ : 0; //Switch weapons
+      if (currentWeapon == 17) { 
+        currentWeapon = 0;
+      } else if (currentWeapon < 17) { 
+        currentWeapon++;
+      }
+      gunClip = clipSize[currentWeapon];
     }
     if (keys[6] == true) { //If the spacebar is pressed
-      gunshot[currentWeapon].play(); //Plays the weapon sound
+      if (gunshot[currentWeapon] != null) { 
+        gunshot[currentWeapon].play(); //Plays the weapon sound
+        gunClip = gunClip - 1;
+      }
+    }
+    println(r);
+    if (r != -1) {
+      timer();
+      if (r == -1) { 
+        gunClip = clipSize[currentWeapon];
+      }
+    }
+      if (keys[5] == true && r == -1) { //If the R key is pressed
+        if (reload[currentWeapon] != null && r == -1) {
+          timer();
+          reload[currentWeapon].play();
+          d = reload[currentWeapon].duration();
+          len = reload[currentWeapon].duration();
+          t = second();
+          r = int(reload[currentWeapon].duration());
+        }
+      }
+      printText(str(gunClip) + "/" + str(clipSize[currentWeapon]), 2500, 1280, orbitron, 72, #FF0000, RIGHT);
     }
   }
-}
