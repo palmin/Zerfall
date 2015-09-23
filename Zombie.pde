@@ -1,23 +1,25 @@
 class zombieClass {
   PImage sheet;
-  int sprite, xpos, ypos, health, yspeed, xspeed, zombieCache;
+  int sprite, xpos, ypos, playerx, playery, health, yspeed, xspeed, zombieCache;
   SoundFile groan, attack;
   boolean[] collision;
   color c = color(0);
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie-temp.png");
-    xpos = player.xpos;
-    ypos = player.ypos;
+    xpos = playerx;
+    ypos = playery;
     sprite = 0;
     yspeed = 1;
     xspeed = speed;
     collision = new boolean[5];
   }
-  void collision() {
+  void movement() {
     for (int i = 0; i < 5; i++) {
       collision[i] = false;
     }
-    for (int x = xpos + 25; x <= xpos + 150; x++) {
+    playerx = player.xpos + 25;
+    playery = player.ypos - 1;
+    for (int x = xpos; x <= xpos + 84; x++) {
       for (int y = ypos + 162; y <= ypos + 162 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
         collision[1] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[1]; //This checks the lower bound
@@ -42,18 +44,16 @@ class zombieClass {
         collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
       }
     }
-  }
-  void movement() {
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
     if (collision[1] == false) {
       ypos += yspeed;
     }
-    if (player.xpos + 50 > xpos && player.ypos > ypos - 20 && player.ypos < ypos + 40) {
+    if (playerx > xpos && playery > ypos - 40 && playery < ypos + 40) {
       xpos = xpos + xspeed;
-    } else if (player.xpos + 50 < xpos && player.ypos > ypos - 5 && player.ypos < ypos + 5) {
+    } else if (playerx + 50 < xpos && playery > ypos - 5 && playery < ypos + 5) {
       xpos = xpos - xspeed;
     }
-    if (collision[0] == true && player.ypos < ypos && collision[2] == false) {
+    if (collision[0] == true && playery > ypos && collision[2] == false) {
       yspeed = -xspeed;
       collision[1] = false;
     }
@@ -62,7 +62,6 @@ class zombieClass {
   void spawn() {
     if (zombieList.length < 8 && zombieCache > 0) {
       zombieCache--;
-      append(zombieList, new zombieClass(int(random(1,4))));
     }
   }
 }

@@ -1,11 +1,10 @@
+import pathfinder.*;
 import processing.sound.*;
 PImage bitmap, map, background, foreground, loading;
-boolean[] keys;
-String[] stuff;
-String gunID[];
-int[] doors, rooms, door, gunRPM, clipSize;
-int r;
-float d;
+boolean keys[];
+String stuff[];
+int doors[], rooms[], door[], time, start, r;
+float duration;
 SoundFile gunshot[], reload[];
 
 playerClass player;
@@ -16,7 +15,7 @@ void setup() {
   fullScreen(P2D);
   loading = loadImage("Images/loading.png");
   image(loading, 0, 0);
-  r = -1;
+  r = 1;
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
   background = loadImage("Maps/map.png");
@@ -32,18 +31,11 @@ void setup() {
   doors = int(split(stuff[0], ','));
   stuff = loadStrings("Resources/rooms.dat");
   rooms = int(split(stuff[0], ','));
-  stuff = loadStrings("Resources/gunID.dat");
-  gunID = split(stuff[0], ',');
-  stuff = loadStrings("Resources/gunRPM.dat");
-  gunRPM = int(split(stuff[0], ','));
   for (int i = 0; i < 18; i++) {
-    gunRPM[i] = 60 * int(frameRate) / gunRPM[i];
-  }
-  stuff = loadStrings("Resources/gunClip.dat");
-  clipSize = int(split(stuff[0], ','));
-  for (int i = 0; i < 18; i++) {
-    gunshot[i] = new SoundFile(this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
-    reload[i] = new SoundFile(this, "Sounds/Guns/" + gunID[i] + " Reload.ogg");
+    gunshot[i] = new SoundFile(this, "Sounds/Dry-Fire.ogg");        
+    reload[i] = new SoundFile(this, "Sounds/Dry-Fire.ogg");
+    gunshot[i] = new SoundFile(this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
+    reload[i] = new SoundFile(this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
   }
   for (int i = 0; i < 8; i++ ) {
     keys[i] = false; //clears the key buffer
@@ -55,16 +47,14 @@ void setup() {
 }
 void draw() {
   image(background, 0, 0);
-  player.collision();
+  player.movement();
   if (player.door[0] != -1) {
     player.doors();
   }
   player.weapon();
   for (zombieClass zombie : zombieList) {
-    zombie.collision();
     zombie.movement();
   }
-  player.movement();
 }
 
 void keyPressed() { //checks key press events
@@ -97,10 +87,15 @@ void printText(String t, int x, int y, PFont f, int s, color c, int a) {
   textAlign(a);
   text(t, x, y);
 }
-
+void timerInit(int d) {
+  time = second();
+  start = second();
+  duration = d;
+  r = 0;
+}
 void timer() {
-  r = second() - player.t;
-  if (r >= player.len) {
-    r = -1;
+  time = second();
+  if (time - start >= duration) {
+    r = 1;
   }
 }
