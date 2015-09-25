@@ -1,9 +1,9 @@
 import pathfinder.*;
 import processing.sound.*;
 PImage bitmap, map, background, foreground, loading;
-boolean keys[];
+boolean keys[], r[], gunFlare;
 String stuff[];
-int doors[], rooms[], door[], time, start, r;
+int doors[], rooms[], door[], time, start;
 float duration;
 SoundFile gunshot[], reload[];
 
@@ -12,10 +12,12 @@ zombieClass[] zombieList;
 
 void setup() {
   noCursor();
-  fullScreen(P2D);
+  fullScreen(P3D);
+  colorMode(RGB, 255);
+  smooth(2);
   loading = loadImage("Images/loading.png");
   image(loading, 0, 0);
-  r = 1;
+  r = new boolean[100];
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
   background = loadImage("Maps/map.png");
@@ -46,6 +48,7 @@ void setup() {
   }
 }
 void draw() {
+  lighting();
   image(background, 0, 0);
   player.movement();
   if (player.door[0] != -1) {
@@ -79,23 +82,4 @@ void keyReleased() { //checks key release events
 }
 
 void roundEnd() {
-}
-
-void printText(String t, int x, int y, PFont f, int s, color c, int a) {
-  textFont(f, s);
-  fill(c);
-  textAlign(a);
-  text(t, x, y);
-}
-void timerInit(int d) {
-  time = second();
-  start = second();
-  duration = d;
-  r = 0;
-}
-void timer() {
-  time = second();
-  if (time - start >= duration) {
-    r = 1;
-  }
 }

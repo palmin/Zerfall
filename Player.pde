@@ -84,7 +84,7 @@ class playerClass {
       collision[1] = false;
       sprite += (sprite % 2 == 0) ? 1 : 0;
     }
-    if (collision[0] == true && keys[2] == true && collision[2] == false) {
+    if (keys[2] == true && collision[0] == true && collision[2] == false) {
       yspeed = -4;
       collision[1] = false;
     }
@@ -136,28 +136,31 @@ class playerClass {
   //IF keySPC = -1 AND lastkeySPC = 0 AND pClip = 0 AND LPR = 1 THEN _SNDPLAY dFire&
 
   void weapon() {
-    if (keys[7] == true && r == 1) { //If the enter key is pressed
+    if (keys[7] == true && r[2] == false) { //If the enter key is pressed
       currentWeapon = (currentWeapon < 17) ? currentWeapon + 1 : 0;
       gunClip = clipSize[currentWeapon];
-      timerInit(1);
+      timerInit(1, 2);
     }
     if (keys[6] == true) { //If the spacebar is pressed
       if (gunshot[currentWeapon] != null && boltPosition == 1) { 
         gunshot[currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
+        gunFlare = true;
       }
       boltPosition = (boltPosition < gunRPM[currentWeapon]) ? (boltPosition + 1) : 1;
     }
-    if (keys[5] == true && r == 1) { //If the R key is pressed
+    if (keys[5] == true && r[1] == false) { //If the R key is pressed
       if (reload[currentWeapon] != null) {
-        timerInit(int(reload[currentWeapon].duration()));
+        timerInit(int(reload[currentWeapon].duration()) + 1, 1);
         reload[currentWeapon].play();
       }
     }
-    println(r);
-    if (r == 0) {
-      timer();
-      gunClip = (r == 1) ? clipSize[currentWeapon] : gunClip;
+    if (r[1] == true) {
+      timer(1);
+      gunClip = (r[1] == false) ? clipSize[currentWeapon] : gunClip;
+    }
+    if (r[2] == true) {
+      timer(2);
     }
     printText(str(gunClip) + "/" + str(clipSize[currentWeapon]), 2500, 1400, orbitron, 72, #FF0000, RIGHT);
   }
