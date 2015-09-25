@@ -21,9 +21,11 @@ void timer(int identifier) { //Runs the timer
 }
 
 void lighting() {
-  fill(127, 127, 127);
+  fill(200, 200, 200);
   if (gunFlare == true) {
-    pointLight(255, 127, 0, player.xpos, player.ypos + 84, 100);
+    float xpos = (player.sprite == (0 | 1 | 4 | 5)) ? player.xpos + 25 : player.xpos + 150;
+    float ypos = 75;
+    spotLight(255, 200, 0, xpos, ypos, 50, xpos, ypos, 0, 15, 2);
     gunFlare = false;
   }
   ambientLight(127,127,127, width/2, height/2, 10);
