@@ -1,9 +1,11 @@
 class playerClass {
   PImage sheet;
-  PFont orbitron;
   String gunID[];
-  int sprite, xpos, ypos, yspeed, door[], i, l, t, currentWeapon, gunClip, gunRPM[], clipSize[], boltPosition;
+  int sprite, xpos, ypos, yspeed, door[], 
+    i, l, t, currentWeapon, gunClip, gunRPM[], 
+    clipSize[], boltPosition;
   boolean collision[];
+  SoundFile gunshot[], reload[], dryfire;
   float len;
   color c = color(0);
   playerClass() {
@@ -16,12 +18,16 @@ class playerClass {
     collision = new boolean[5];
     door = new int[2];
     orbitron = createFont("Fonts/Orbitron.ttf", 72, true);
+
     gunClip = 30;
     boltPosition = 1;
+    gunshot = new SoundFile[18];
+    reload = new SoundFile[18];
     stuff = loadStrings("Resources/gunID.dat");
     gunID = split(stuff[0], ',');
     stuff = loadStrings("Resources/gunRPM.dat");
     gunRPM = int(split(stuff[0], ','));
+    dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
     for (int i = 0; i < 18; i++) {
       gunRPM[i] = (gunRPM[i] != 0) ? 60 * 60 / gunRPM[i] : 1;
       println(gunRPM[i]);
@@ -95,7 +101,7 @@ class playerClass {
     if (collision[1] == false) {
       ypos += yspeed;
     }
-    image(sheet.get(sprite * 175, 0, 175, 161), xpos, ypos);
+    playerSprite = sheet.get(sprite * 175, 0, 175, 161);
   }
   void doors() {
     l = -1;
@@ -111,30 +117,6 @@ class playerClass {
       }
     }
   }
-  //IF _KEYHIT = 13 THEN
-  //    pGunshot& = _SNDCOPY(gunSound(pGun, Shot))
-  //    pReload& = _SNDCOPY(gunSound(pGun, Reload))
-  //    ELSEIF pClip = -1 AND _SNDPLAYING(pReload&) = 0 THEN pClip = gunList(pGun, 1)
-  //END IF
-  //IF LPR < gunList(pGun, 2) AND keySPC = -1 THEN LPR = LPR + 1 ELSE IF LPR >= gunList(pGun, 2) THEN LPR = 1
-  //IF keySPC = -1 AND (gunList(pGun, 0) = -1 OR lastkeySPC = 0 AND gunList(pGun, 0) = 0) AND LPR = 1 AND pClip > 0 AND _SNDPLAYING(pReload&) = 0 THEN
-  //    pClip = pClip - 1
-  //    IF pSprite < 4 THEN pSprite = pSprite + 4
-  //    _SNDPLAYCOPY pGunshot&
-  //    _SOURCE bitmap&
-  //    IF pSprite = (0 OR 1 OR 4 OR 5) THEN
-  //        FOR x = posi(0, 0) TO 0 STEP -1
-  //            IF POINT(x, posi(1, 0) + 75) = _RGB32(0, 0, 0) OR POINT(x, posi(1, 0) + 75) = _RGB32(255, 0, 0) THEN EXIT FOR
-  //        NEXT
-  //    ELSE
-  //        FOR x = posi(0, 0) TO 1920 STEP 1
-  //            IF POINT(x, posi(1, 0) + 75) = _RGB32(0, 0, 0) OR POINT(x, posi(1, 0) + 75) = _RGB32(255, 0, 0) THEN EXIT FOR
-  //        NEXT
-  //    END IF
-  //END IF
-  //IF keyR AND _SNDPLAYING(pReload&) = 0 THEN _SNDPLAY pReload&: pClip = -1
-  //IF keySPC = -1 AND lastkeySPC = 0 AND pClip = 0 AND LPR = 1 THEN _SNDPLAY dFire&
-
   void weapon() {
     if (keys[7] == true && r[2] == false) { //If the enter key is pressed
       currentWeapon = (currentWeapon < 17) ? currentWeapon + 1 : 0;
@@ -142,10 +124,12 @@ class playerClass {
       timerInit(1, 2);
     }
     if (keys[6] == true) { //If the spacebar is pressed
-      if (gunshot[currentWeapon] != null && boltPosition == 1) { 
+      if (gunshot[currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
         gunshot[currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
         gunFlare = true;
+      } else if (boltPosition == 1 && gunClip == 0) {
+        dryfire.play();
       }
       boltPosition = (boltPosition < gunRPM[currentWeapon]) ? (boltPosition + 1) : 1;
     }
@@ -162,6 +146,5 @@ class playerClass {
     if (r[2] == true) {
       timer(2);
     }
-    printText(str(gunClip) + "/" + str(clipSize[currentWeapon]), 2500, 1400, orbitron, 72, #FF0000, RIGHT);
   }
 }

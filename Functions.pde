@@ -20,13 +20,17 @@ void timer(int identifier) { //Runs the timer
   }
 }
 
-void lighting() {
-  fill(200, 200, 200);
+public void lighting() {
+  fill(255, 255, 255);
+  ambientLight(127,127,127);
   if (gunFlare == true) {
-    float xpos = (player.sprite == (0 | 1 | 4 | 5)) ? player.xpos + 25 : player.xpos + 150;
-    float ypos = 75;
-    spotLight(255, 200, 0, xpos, ypos, 50, xpos, ypos, 0, 15, 2);
+    float xpos = (player.sprite == (0 | 1 | 4 | 5)) ? player.xpos + 150 : player.xpos + 25;
+    float ypos = player.ypos + 75;
+    spotLight(255, 255, 0, xpos, ypos, 400, 0, 0, -1, PI/16, 3);
     gunFlare = false;
   }
-  ambientLight(127,127,127, width/2, height/2, 10);
+}
+
+public void HUD() {
+  printText(str(player.gunClip) + "/" + str(player.clipSize[player.currentWeapon]), 2500, 1400, orbitron, 72, #777777, RIGHT);
 }

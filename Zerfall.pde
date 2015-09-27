@@ -1,12 +1,11 @@
-import pathfinder.*;
 import processing.sound.*;
-PImage bitmap, map, background, foreground, loading;
+PImage bitmap, map, foreground, loading, playerSprite;
+PShape background;
 boolean keys[], r[], gunFlare;
 String stuff[];
 int doors[], rooms[], door[], time, start;
 float duration;
-SoundFile gunshot[], reload[];
-
+PFont orbitron;
 playerClass player;
 zombieClass[] zombieList;
 
@@ -20,11 +19,11 @@ void setup() {
   r = new boolean[100];
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
-  background = loadImage("Maps/map.png");
+  map = loadImage("Maps/map.png");
   foreground = loadImage("Maps/foreground.png");
 
-  gunshot = new SoundFile[18];
-  reload = new SoundFile[18];
+  background = loadShape("Maps/background-01.svg");
+
   player = new playerClass();
   zombieList = new zombieClass[8];
   keys = new boolean[8];
@@ -34,30 +33,30 @@ void setup() {
   stuff = loadStrings("Resources/rooms.dat");
   rooms = int(split(stuff[0], ','));
   for (int i = 0; i < 18; i++) {
-    gunshot[i] = new SoundFile(this, "Sounds/Dry-Fire.ogg");        
-    reload[i] = new SoundFile(this, "Sounds/Dry-Fire.ogg");
-    gunshot[i] = new SoundFile(this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
-    reload[i] = new SoundFile(this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
+    player.gunshot[i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
+    player.reload[i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
   }
   for (int i = 0; i < 8; i++ ) {
     keys[i] = false; //clears the key buffer
   }
   int index = 0;
   for (int i = 0; i < 8; i++) {
-    zombieList[index++] = new zombieClass(int(random(1, 4)));
+    zombieList[index++] = new zombieClass(int(random(1, 5)));
   }
 }
 void draw() {
-  lighting();
-  image(background, 0, 0);
+  player.weapon();
   player.movement();
   if (player.door[0] != -1) {
     player.doors();
   }
-  player.weapon();
+  lighting();
+  image(map, 0, 0);
+  image(playerSprite, player.xpos, player.ypos);
   for (zombieClass zombie : zombieList) {
     zombie.movement();
   }
+  HUD();
 }
 
 void keyPressed() { //checks key press events
