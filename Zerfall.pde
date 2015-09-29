@@ -1,12 +1,11 @@
 import processing.sound.*;
 PImage bitmap, map, foreground, loading, playerSprite;
 PShape background;
-boolean keys[], r[], gunFlare;
+boolean keys[], timer[], gunFlare;
 String stuff[];
-int doors[], rooms[], door[], time, start;
-float duration;
+int doors[], rooms[], time, start, duration;
 PFont orbitron;
-playerClass player;
+Player player;
 zombieClass[] zombieList;
 
 void setup() {
@@ -16,25 +15,22 @@ void setup() {
   smooth(2);
   loading = loadImage("Images/loading.png");
   image(loading, 0, 0);
-  r = new boolean[100];
+  timer = new boolean[100];
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
   map = loadImage("Maps/map.png");
   foreground = loadImage("Maps/foreground.png");
 
-  background = loadShape("Maps/background-01.svg");
-
-  player = new playerClass();
+  player = new Player();
   zombieList = new zombieClass[8];
   keys = new boolean[8];
-  door = new int[2];
   stuff = loadStrings("Resources/doors.dat");
   doors = int(split(stuff[0], ','));
   stuff = loadStrings("Resources/rooms.dat");
   rooms = int(split(stuff[0], ','));
   for (int i = 0; i < 18; i++) {
-    player.gunshot[i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
-    player.reload[i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
+    player.gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
+    player.gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
   }
   for (int i = 0; i < 8; i++ ) {
     keys[i] = false; //clears the key buffer
@@ -47,12 +43,7 @@ void setup() {
 void draw() {
   player.weapon();
   player.movement();
-  if (player.door[0] != -1) {
-    player.doors();
-  }
-  lighting();
-  image(map, 0, 0);
-  image(playerSprite, player.xpos, player.ypos);
+  display();
   for (zombieClass zombie : zombieList) {
     zombie.movement();
   }
