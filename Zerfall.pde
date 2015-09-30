@@ -15,11 +15,10 @@ void setup() {
   smooth(2);
   loading = loadImage("Images/loading.png");
   image(loading, 0, 0);
-  timer = new boolean[100];
-  frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
   map = loadImage("Maps/map.png");
   foreground = loadImage("Maps/foreground.png");
+  timer = new boolean[100];
 
   player = new Player();
   zombieList = new zombieClass[8];

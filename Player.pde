@@ -2,8 +2,8 @@ class Player {
   PImage sheet;
   String gunID[], gunInfo[];
   int sprite, xpos, ypos, yspeed, 
-    l, t, doorx, doory, currentWeapon, gunClip, gunRPM[], 
-    clipSize[], boltPosition;
+    l, t, doorx, doory, currentWeapon, gunClip,
+    gunRPM[], clipSize[], boltPosition;
   boolean collision[];
   SoundFile gunAudio[][], dryfire;
   Player() {
