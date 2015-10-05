@@ -122,18 +122,18 @@ class Player {
       gunClip = clipSize[currentWeapon];
       timerInit(1, 2);
     }
-    if (keys[6] == true) { //If the spacebar is pressed
+    if (keys[6] == true && timer[1] == false) { //If the spacebar is pressed
       if (gunAudio[0][currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
         gunFlare = true;
-      } else if (boltPosition == 1 && gunClip == 0) {
+      } else if (boltPosition == 1 && gunClip == 0 ) {
         dryfire.play();
       }
       boltPosition = (boltPosition < gunRPM[currentWeapon]) ? (boltPosition + 1) : 1;
     }
     if (keys[5] == true && timer[1] == false) { //If the R key is pressed
-        timerInit(int(gunAudio[1][currentWeapon].duration()) + 1, 1);
+        timerInit(gunAudio[1][currentWeapon].duration(), 1);
         gunAudio[1][currentWeapon].play();
     }
     if (timer[1] == true) {

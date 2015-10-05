@@ -3,30 +3,33 @@ PImage bitmap, map, foreground, loading, playerSprite;
 PShape background;
 boolean keys[], timer[], gunFlare;
 String stuff[];
-int doors[], rooms[], time, start, duration;
+int doors[], rooms[];
 PFont orbitron;
+float duration, time, start;
+PShader shader;
 Player player;
-zombieClass[] zombieList;
+zombieClass zombieList[];
 
 void setup() {
+  textMode(SCREEN);
   noCursor();
   fullScreen(P3D);
   colorMode(RGB, 255);
-  smooth(2);
+  smooth(8);
   loading = loadImage("Images/loading.png");
   image(loading, 0, 0);
   bitmap = loadImage("Maps/bitmap.png");
   map = loadImage("Maps/map.png");
   foreground = loadImage("Maps/foreground.png");
-  timer = new boolean[100];
-
-  player = new Player();
-  zombieList = new zombieClass[8];
-  keys = new boolean[8];
   stuff = loadStrings("Resources/doors.dat");
   doors = int(split(stuff[0], ','));
   stuff = loadStrings("Resources/rooms.dat");
   rooms = int(split(stuff[0], ','));
+  timer = new boolean[100];
+  keys = new boolean[8];
+  shader = loadShader("Shaders/pixlightxfrag.glsl", "Shaders/pixlightxvert.glsl");
+  player = new Player();
+  zombieList = new zombieClass[8];
   for (int i = 0; i < 18; i++) {
     player.gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
     player.gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
@@ -38,6 +41,14 @@ void setup() {
   for (int i = 0; i < 8; i++) {
     zombieList[index++] = new zombieClass(int(random(1, 5)));
   }
+  background = createShape();
+  background.beginShape();
+  background.texture(map);
+  background.vertex(0, 0, 0, 0, 0);
+  background.vertex(2560, 0, 0, map.width, 0);
+  background.vertex(2560, 1440, 0, map.width, map.height);
+  background.vertex(0, 1440, 0, 0, map.height);
+  background.endShape(CLOSE);
 }
 void draw() {
   player.weapon();

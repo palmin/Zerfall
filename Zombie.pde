@@ -6,8 +6,8 @@ class zombieClass {
   color c = color(0);
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie-temp.png");
-    xpos = playerx;
-    ypos = playery;
+    xpos = player.xpos;
+    ypos = player.ypos;
     sprite = 0;
     yspeed = 1;
     xspeed = speed;
