@@ -1,12 +1,12 @@
-class Player {
+class player {
   PImage sheet;
   String gunID[], gunInfo[];
-  int sprite, xpos, ypos, yspeed, 
-    l, t, doorx, doory, currentWeapon, gunClip,
+  int sprite, xpos, ypos, yspeed, l, 
+    t, doorx, doory, currentWeapon, gunClip, 
     gunRPM[], clipSize[], boltPosition;
   boolean collision[];
   SoundFile gunAudio[][], dryfire;
-  Player() {
+  player() {
     sheet = loadImage("Sprites/player.png");
     xpos = 1136;
     ypos = 470;
@@ -14,7 +14,6 @@ class Player {
     yspeed = 1;
     currentWeapon = 0;
     collision = new boolean[5];
-    orbitron = createFont("Fonts/Orbitron.ttf", 72, true);
 
     gunClip = 30;
     boltPosition = 1;
@@ -48,42 +47,42 @@ class Player {
         collision[2] = (c == color(0, 0, 0)) ? true : collision[2]; //This checks the upper bound
       }
     }
-    if (keys[0] == true || keys[4] == true) {
+    if (keys[65] == true || keys[69] == true) {
       for (int x = xpos + 20; x <= xpos + 25; x++) {
         for (int y = ypos; y<= ypos + 161; y++) {   
           color c = bitmap.get(x, y); 
           collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
-          if (c == color(255, 0, 0) && keys[4] == true) {
-            doors(x,y);
+          if (c == color(255, 0, 0) && keys[69] == true) {
+            doors(x, y);
           }
         }
       }
     }
-    if (keys[1] == true || keys[4] == true) {
+    if (keys[68] == true || keys[69] == true) {
       for (int x = xpos + 150; x <= xpos + 155; x++) { 
         for (int y = ypos; y<= ypos + 161; y++) {   
           color c = bitmap.get(x, y); 
           collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
-          if (c == color(255, 0, 0) && keys[4] == true) {
-            doors(x,y);
+          if (c == color(255, 0, 0) && keys[69] == true) {
+            doors(x, y);
           }
         }
       }
     }
-    if (keys[0] == true && collision[3] == false) {
+    if (keys[65] == true && collision[3] == false) {
       xpos -= 5;
       sprite = (collision[1] == true) ? 0 : sprite;
     }
-    if (keys[1] == true && collision[4] == false) {
+    if (keys[68] == true && collision[4] == false) {
       xpos += 5;
       sprite = (collision[1] == true) ? 2 : sprite;
     }
-    if (keys[2] == true && collision[1] == true && collision[2] == false) {
+    if (keys[87] == true && collision[1] == true && collision[2] == false) {
       yspeed = -10;
       collision[1] = false;
       sprite += (sprite % 2 == 0) ? 1 : 0;
     }
-    if (keys[2] == true && collision[0] == true && collision[2] == false) {
+    if (keys[87] == true && collision[0] == true && collision[2] == false) {
       yspeed = -4;
       collision[1] = false;
     }
@@ -96,45 +95,40 @@ class Player {
     }
     if (sprite > 3 && boltPosition != 2) {
       sprite -= 4;
-    } else if (boltPosition == 2 && sprite < 4 && keys[6] == true && gunClip > 0) {
+    } else if (boltPosition == 2 && sprite < 4 && keys[32] == true && gunClip > 0) {
       sprite += 4;
     }
   }
   void doors(int xpos, int ypos) {
-    doorx = xpos;
-    doory = ypos;
-    l = -1;
     for (int i = 0; i <= 20; i += 4) {
       if (xpos >= doors[i] && xpos <= doors[i + 2] && ypos >= doors[i + 1] && ypos <= doors[i + 3]) {
-        l = i;
+        for (int x = doors[i]; x <= doors[i + 2]; x++) { 
+          for (int y = doors[i + 1]; y < doors[i + 3]; y++) {
+            bitmap.set(x, y, color(255));
+          }
+        }
         break;
-      }
-    }
-    for (int x = doors[l]; x <= doors[l + 2]; x++) { 
-      for (int y = doors[l + 1]; y < doors[l + 3]; y++) {
-        bitmap.set(x, y, color(255));
       }
     }
   }
   void weapon() {
-    if (keys[7] == true && timer[2] == false) { //If the enter key is pressed
+    if (keys[13] == true && timer[2] == false) { //If the enter key is pressed
       currentWeapon = (currentWeapon < 17) ? currentWeapon + 1 : 0;
       gunClip = clipSize[currentWeapon];
-      timerInit(1, 2);
+      timer(1, 2);
     }
-    if (keys[6] == true && timer[1] == false) { //If the spacebar is pressed
+    if (keys[32] == true && timer[1] == false) { //If the spacebar is pressed
       if (gunAudio[0][currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
-        gunFlare = true;
       } else if (boltPosition == 1 && gunClip == 0 ) {
         dryfire.play();
       }
       boltPosition = (boltPosition < gunRPM[currentWeapon]) ? (boltPosition + 1) : 1;
     }
-    if (keys[5] == true && timer[1] == false) { //If the R key is pressed
-        timerInit(gunAudio[1][currentWeapon].duration(), 1);
-        gunAudio[1][currentWeapon].play();
+    if (keys[82] == true && timer[1] == false) { //If the R key is pressed
+      timer(gunAudio[1][currentWeapon].duration(), 1);
+      gunAudio[1][currentWeapon].play();
     }
     if (timer[1] == true) {
       timer(1);

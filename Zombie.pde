@@ -5,7 +5,7 @@ class zombieClass {
   boolean[] collision;
   color c = color(0);
   zombieClass(int speed) {
-    sheet = loadImage("Sprites/zombie-temp.png");
+    sheet = loadImage("Sprites/zombie.png");
     xpos = player.xpos;
     ypos = player.ypos;
     sprite = 0;
@@ -18,15 +18,15 @@ class zombieClass {
       collision[i] = false;
     }
     playerx = player.xpos + 25;
-    playery = player.ypos - 1;
-    for (int x = xpos; x <= xpos + 84; x++) {
-      for (int y = ypos + 162; y <= ypos + 162 + abs(yspeed); y++) {
+    playery = player.ypos;
+    for (int x = xpos; x <= xpos + 100; x++) {
+      for (int y = ypos + 161; y <= ypos + 161 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
         collision[1] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[1]; //This checks the lower bound
         collision[0] = (c == color(0, 0, 255)) ? true : collision[0];
       }
     }
-    for (int x = xpos; x <= xpos + 84; x++) {
+    for (int x = xpos; x <= xpos + 100; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y--) {
         c = bitmap.get(x, y);
         collision[2] = (c == color(0, 0, 0)) ? true : collision[2]; //This checks the upper bound
@@ -38,29 +38,31 @@ class zombieClass {
         collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
       }
     }
-    for (int x = xpos + 84; x <= xpos + 84 + xspeed; x++) { 
+    for (int x = xpos + 100; x <= xpos + 100 + xspeed; x++) { 
       for (int y = ypos; y<= ypos + 162; y++) {   
         c = bitmap.get(x, y); 
         collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
       }
     }
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
+    if (collision[0] == true && playery < ypos && collision[2] == false) {
+      yspeed = -xspeed;
+      collision[1] = false;
+    }
     if (collision[1] == false) {
       ypos += yspeed;
     }
     if (playerx > xpos && playery > ypos - 40 && playery < ypos + 40) {
       xpos = xpos + xspeed;
+      sprite = 1;
     } else if (playerx + 50 < xpos && playery > ypos - 5 && playery < ypos + 5) {
       xpos = xpos - xspeed;
+      sprite = 0;
     }
-    if (collision[0] == true && playery > ypos && collision[2] == false) {
-      yspeed = -xspeed;
-      collision[1] = false;
-    }
-    image(sheet.get(sprite * 84, 0, 84, 162), xpos, ypos);
+    image(sheet.get(sprite * 100, 0, 100, 162), xpos, ypos);
   }
   void spawn() {
-    if (zombieList.length < 8 && zombieCache > 0) {
+    if (zombies.length < 8 && zombieCache > 0) {
       zombieCache--;
     }
   }
