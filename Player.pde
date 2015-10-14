@@ -71,11 +71,11 @@ class player {
     }
     if (keys[65] == true && collision[3] == false) {
       xpos -= 5;
-      sprite = (collision[1] == true) ? 0 : sprite;
+      sprite = (collision[1] == true && keys[' '] == false) ? 0 : sprite;
     }
     if (keys[68] == true && collision[4] == false) {
       xpos += 5;
-      sprite = (collision[1] == true) ? 2 : sprite;
+      sprite = (collision[1] == true && keys[' '] == false) ? 2 : sprite;
     }
     if (keys[87] == true && collision[1] == true && collision[2] == false) {
       yspeed = -10;
@@ -101,9 +101,9 @@ class player {
   }
   void doors(int xpos, int ypos) {
     for (int i = 0; i <= 20; i += 4) {
-      if (xpos >= doors[i] && xpos <= doors[i + 2] && ypos >= doors[i + 1] && ypos <= doors[i + 3]) {
-        for (int x = doors[i]; x <= doors[i + 2]; x++) { 
-          for (int y = doors[i + 1]; y < doors[i + 3]; y++) {
+      if (xpos >= doors[i] - 2 && xpos <= doors[i + 2] + 2 && ypos >= doors[i + 1] + 2 && ypos <= doors[i + 3] - 2) {
+        for (int x = doors[i] - 2; x <= doors[i + 2] + 2; x++) { 
+          for (int y = doors[i + 1] + 2; y < doors[i + 3] - 2; y++) {
             bitmap.set(x, y, color(255));
           }
         }
