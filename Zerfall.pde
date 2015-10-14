@@ -1,10 +1,22 @@
 import processing.sound.*;
-PImage bitmap, loading, map, foreground;
-PShape background;
-boolean keys[];
-String stuff[];
-int doors[] = { 800, 445, 805, 725, 1505, 445, 1510, 725, 2340, 445, 2345, 725, 1280, 730, 1285, 1020, 2340, 730, 2345, 1020, 2340, 1025, 2345, 1300 };
-int rooms[] = { 0, 330, 600, 548, 1134, 330, 1756, 548, 2340, 330, 1920, 980, 0, 545, 961, 768, 961, 545, 2340, 768, 0, 765, 2340, 980 };
+PImage bitmap = loadImage("Maps/bitmap.png"); 
+PImage loading = loadImage("Images/loading.png");
+PImage map = loadImage("Maps/map.png");
+PImage foreground = loadImage("Maps/foreground.png");
+PShape background = createShape();
+boolean keys[] = new boolean[128];
+int doors[] = { 800, 445, 805, 725, 
+1505, 445, 1510, 725, 
+2340, 445, 2345, 725,
+1280, 730, 1285, 1020,
+2340, 730, 2345, 1020,
+2340, 1025, 2345, 1300 };
+int rooms[] = { 0, 330, 600, 548, 
+1134, 330, 1756, 548, 
+2340, 330, 1920, 980, 
+0, 545, 961, 768, 
+961, 545, 2340, 768, 
+0, 765, 2340, 980 };
 float timerInfo[][];
 boolean timer[];
 PFont orbitron;
@@ -15,28 +27,17 @@ void setup() {
   fullScreen(P3D);
   noCursor();
   smooth(2);
-  loading = loadImage("Images/loading.png");
   image(loading, 0, 0);
-  bitmap = loadImage("Maps/bitmap.png");
-  map = loadImage("Maps/map.png");
-  foreground = loadImage("Maps/foreground.png");
-  stuff = loadStrings("Resources/doors.dat");
-  rooms = int(split(stuff[0], ','));
-  keys = new boolean[128];
   player = new player();
   zombies = new zombieClass[8];
   for (int i = 0; i < 18; i++) {
     player.gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Gunshot.ogg");
     player.gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
   }
-  for (int i = 0; i < 8; i++ ) {
-    keys[i] = false; //clears the key buffer
-  }
   int index = 0;
   for (int i = 0; i < 8; i++) {
     zombies[index++] = new zombieClass(int(random(1, 3)));
   }
-  background = createShape();
   background.beginShape();
   background.texture(map);
   background.vertex(0, 0, 0, 0, 0);

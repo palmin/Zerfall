@@ -1,11 +1,13 @@
 class player {
   PImage sheet;
-  String gunID[], gunInfo[];
-  int sprite, xpos, ypos, yspeed, l, 
-    t, doorx, doory, currentWeapon, gunClip, 
-    gunRPM[], clipSize[], boltPosition;
-  boolean collision[];
-  SoundFile gunAudio[][], dryfire;
+  String gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", 
+    "M1928", "MP40", "M60", "M9", "P08", "PPK", "RPK", "Stoner63", "Uzi" };
+  int sprite, xpos, ypos, yspeed, currentWeapon, gunClip, 
+    gunRPM[] = { 6, 5, 120, 48, 3, 6, 144, 6, 5, 600, 6, 90, 7, 180, 240, 6, 4, 6 }, 
+    clipSize[] = { 30, 30, 10, 30, 25, 20, 5, 7, 20, 30, 100, 10, 32, 8, 8, 75, 150, 32 }, 
+    boltPosition;
+  boolean collision[] = new boolean[5];
+  SoundFile gunAudio[][] = new SoundFile[2][18], dryfire;
   player() {
     sheet = loadImage("Sprites/player.png");
     xpos = 1136;
@@ -13,22 +15,9 @@ class player {
     sprite = 0;
     yspeed = 1;
     currentWeapon = 0;
-    collision = new boolean[5];
-
     gunClip = 30;
     boltPosition = 1;
-    gunAudio = new SoundFile[2][18];
-    stuff = loadStrings("Resources/gunID.dat");
-    gunID = split(stuff[0], ',');
-    stuff = loadStrings("Resources/gunRPM.dat");
-    gunRPM = int(split(stuff[0], ','));
     dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
-    for (int i = 0; i < 18; i++) {
-      gunRPM[i] = (gunRPM[i] != 0) ? 60 * 60 / gunRPM[i] : 1;
-      println(gunRPM[i]);
-    }
-    stuff = loadStrings("Resources/gunClip.dat");
-    clipSize = int(split(stuff[0], ','));
   }
   void movement() {
     for (int i = 0; i < 5; i++) {
