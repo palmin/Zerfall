@@ -1,9 +1,6 @@
 import processing.sound.*;
-PImage bitmap = loadImage("Maps/bitmap.png"); 
-PImage loading = loadImage("Images/loading.png");
-PImage map = loadImage("Maps/map.png");
-PImage foreground = loadImage("Maps/foreground.png");
-PShape background = createShape();
+PImage bitmap, loading, map, foreground;
+PShape background;
 boolean keys[] = new boolean[128];
 int doors[] = { 800, 445, 805, 725, 
 1505, 445, 1510, 725, 
@@ -27,6 +24,10 @@ void setup() {
   fullScreen(P3D);
   noCursor();
   smooth(2);
+  bitmap = loadImage("Maps/bitmap.png");
+  loading = loadImage("Images/loading.png");
+  map = loadImage("Maps/map.png");
+  foreground = loadImage("Maps/foreground.png");
   image(loading, 0, 0);
   player = new player();
   zombies = new zombieClass[8];
@@ -38,6 +39,7 @@ void setup() {
   for (int i = 0; i < 8; i++) {
     zombies[index++] = new zombieClass(int(random(1, 3)));
   }
+  background = createShape();
   background.beginShape();
   background.texture(map);
   background.vertex(0, 0, 0, 0, 0);

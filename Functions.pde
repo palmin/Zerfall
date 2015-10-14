@@ -1,12 +1,3 @@
-class timer {
-  timer(float d, int identifier) {
-    timerInfo[1][identifier] = 60 * minute() + second() + (millis() * .0001);
-    timerInfo[0][identifier] = 60 * minute() + second() + (millis() * .0001);
-    timerInfo[2][identifier] = d;
-    timer[identifier] = true;
-  }
-}
-
 void printText(String text, int x, int y, int z, PFont font, int size, color fill, int align) {
   textFont(font);
   textSize(int(map(size, 0, 5120, 0, width)));
@@ -20,8 +11,14 @@ void timer(float d, int identifier) { //Initializes the timer
     if (timerInfo[1][identifier]- timerInfo[0][identifier] >= timerInfo[2][identifier]) {
       timer[identifier] = false;
     }
+  } else {
+    timerInfo[1][identifier] = 60 * minute() + second() + (millis() * .0001);
+    timerInfo[0][identifier] = 60 * minute() + second() + (millis() * .0001);
+    timerInfo[2][identifier] = d;
+    timer[identifier] = true;
   }
 }
+
 
 void timer(int identifier) { //Runs the timer
   timer(-1, identifier);
