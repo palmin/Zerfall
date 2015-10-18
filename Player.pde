@@ -110,6 +110,29 @@ class player {
       if (gunAudio[0][currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
+        pushMatrix();
+        int xpos = xpos + 75;
+        int ypos = ypos + 75;
+        int step = (sprite == (0 | 1 | 4 | 5)) ? -1 : 1;
+        int max = (step == -1) ? 0 : width;
+        boolean condition = false;
+        for (int x = xpos; x != max; x += step) {
+          color c = bitmap.get(x, ypos);
+          if (condition == false) {
+            for (zombieClass zombie : zombies) {
+              if (x > zombie.xpos && x < zombie.xpos + 100 && ypos > zombie.ypos && ypos < zombie.ypos + 162) {
+                zombie.health -= 10;
+                condition = true;
+                break;
+              }
+            }
+          }
+          if (c == (color(255, 0, 0) | color(0))) {
+            break;
+          }
+        }
+        popMatrix();
+
       } else if (boltPosition == 1 && gunClip == 0 ) {
         dryfire.play();
       }
