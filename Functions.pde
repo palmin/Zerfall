@@ -5,23 +5,16 @@ void printText(String text, int x, int y, int z, PFont font, int size, color fil
   textAlign(align);
   text(text, x, y, z);
 }
-void timer(float d, int identifier) { //Initializes the timer
-  if (d < 0) {
-    timerInfo[1][identifier]= 60 * minute() + second() + (millis() * .0001);
-    if (timerInfo[1][identifier]- timerInfo[0][identifier] >= timerInfo[2][identifier]) {
-      timer[identifier] = false;
-    }
-  } else {
+class timer {
+  float duration, elapsed, start;
+  timer(float d, int identifier) {
     timerInfo[1][identifier] = 60 * minute() + second() + (millis() * .0001);
     timerInfo[0][identifier] = 60 * minute() + second() + (millis() * .0001);
     timerInfo[2][identifier] = d;
-    timer[identifier] = true;
   }
-}
-
-
-void timer(int identifier) { //Runs the timer
-  timer(-1, identifier);
+  void check() {
+    timerInfo[1][identifier]= 60 * minute() + second() + (millis() * .0001);
+  }
 }
 
 void display() {
@@ -50,7 +43,6 @@ void display() {
   lights();
   hint(DISABLE_DEPTH_TEST);
   camera();
-  textMode(MODEL);
   translate(0, 0, 5);
   int x = int(map(2500, 0, 2560, 0, width));
   int y = int(map(1400, 0, 1440, 0, height));
