@@ -1,18 +1,24 @@
 void printText(String text, int x, int y, int z, PFont font, int size, color fill, int align) {
   textFont(font);
-  textSize(int(map(size, 0, 5120, 0, width)));
+  textSize(int(map(size, 0, 2560, 0, width)));
   fill(fill);
   textAlign(align);
   text(text, x, y, z);
 }
+
 class timer {
   float duration, elapsed, start;
+  boolean status;
   timer(float duration) {
     start = 60 * minute() + second() + (millis() * .0001);
-    elapsed = 60 * minute() + second() + (millis() * .0001);
+    elapsed = 0;
+    status = true;
   }
   void check() {
-    elapsed = 60 * minute() + second() + (millis() * .0001);
+    elapsed = 60 * minute() + second() + (millis() * .0001) - start;
+    if (elapsed >= duration) {
+    	status = false;
+    	}
   }
 }
 
