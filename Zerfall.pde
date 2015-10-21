@@ -14,8 +14,6 @@ int rooms[] = { 0, 330, 600, 548,
 0, 545, 961, 768, 
 961, 545, 2340, 768, 
 0, 765, 2340, 980 };
-float timerInfo[][];
-boolean timer[];
 PFont orbitron;
 player player;
 zombieClass zombies[];
@@ -48,8 +46,6 @@ void setup() {
   background.vertex(0, 1440, 0, 0, map.height);
   background.endShape(CLOSE);
   orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, displayWidth)), true);
-  timerInfo = new float[3][64];
-  timer = new boolean[64];
 }
 
 void draw() {
@@ -61,19 +57,19 @@ void draw() {
   display();
 }
 
-void keyPressed() {                                       //checks key press events
+void keyPressed() { 
   for (int i = 0; i < 128; i++) {
     if (i >= 65 && i < 90) {
-      keys[i] = (key == (char(i) | char(i + 32))) ? true : keys[i];  //checks the letter keys
+      keys[i] = (key == (char(i) | char(i + 32))) ? true : keys[i];
     } else {
       keys[i] = (key == char(i)) ? true : keys[i];
     }
   }
 }
-void keyReleased() { //checks key release events
+void keyReleased() {
   for (int i = 0; i < 128; i++) {
     if (i >= 65 && i < 90) {
-      keys[i] = (key == (char(i) | char(i + 32))) ? false : keys[i];  //checks the letter keys
+      keys[i] = (key == (char(i) | char(i + 32))) ? false : keys[i];
     } else {
       keys[i] = (key == char(i)) ? false : keys[i];
     }
