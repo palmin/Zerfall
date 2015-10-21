@@ -78,13 +78,9 @@ class player {
       yspeed = -4;
       collision[1] = false;
     }
-    if (collision[2] == true) {
-      yspeed = 1;
-    }
+    yspeed = (collision[2] == true) ? 1 : yspeed;
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
-    if (collision[1] == false) {
-      ypos += yspeed;
-    }
+    ypos += (collision[1] == false) ? yspeed : 0;
     if (sprite > 3 && boltPosition != 2) {
       sprite -= 4;
     } else if (boltPosition == 2 && sprite < 4 && keys[32] == true && gunClip > 0) {
