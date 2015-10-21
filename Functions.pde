@@ -8,17 +8,17 @@ void printText(String text, int x, int y, int z, PFont font, int size, color fil
 
 class timer {
   float duration, elapsed, start;
-  boolean status;
+  boolean active;
   timer(float duration) {
     start = 60 * minute() + second() + (millis() * .0001);
     elapsed = 0;
-    status = true;
+    active = true;
   }
   void check() {
     elapsed = 60 * minute() + second() + (millis() * .0001) - start;
     if (elapsed >= duration) {
-    	status = false;
-    	}
+    	active = false;
+    }
   }
 }
 
@@ -32,7 +32,6 @@ void display() {
     float ypos = player.ypos + 75;
     fill(255, 255, 127);
     pointLight(255, 127, 0, xpos, ypos, 40);
-  } else {
   }
   translate(0, 0, -1);
   shape(background);
