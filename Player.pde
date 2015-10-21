@@ -111,9 +111,9 @@ class player {
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
         pushMatrix();
-        int xpos = xpos + 75;
-        int ypos = ypos + 75;
-        int step = (sprite == (0 | 1 | 4 | 5)) ? -1 : 1;
+        int xpos = player.xpos + 75;
+        int ypos = player.ypos + 75;
+        int step = (player.sprite == 0 || player.sprite == 1) ? -1 : 1;
         int max = (step == -1) ? 0 : width;
         boolean condition = false;
         for (int x = xpos; x != max; x += step) {
@@ -122,6 +122,9 @@ class player {
             for (zombieClass zombie : zombies) {
               if (x > zombie.xpos && x < zombie.xpos + 100 && ypos > zombie.ypos && ypos < zombie.ypos + 162) {
                 zombie.health -= 10;
+                if (zombie.health <= 0) {
+                  zombie = new zombieClass(int(random(1,3)));
+                }
                 condition = true;
                 break;
               }
@@ -131,8 +134,6 @@ class player {
             break;
           }
         }
-        popMatrix();
-
       } else if (boltPosition == 1 && gunClip == 0 ) {
         dryfire.play();
       }
