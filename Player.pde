@@ -8,6 +8,7 @@ class player {
     boltPosition;
   boolean collision[] = new boolean[5];
   SoundFile gunAudio[][] = new SoundFile[2][18], dryfire;
+  timer swap, reload;
   player() {
     sheet = loadImage("Sprites/player.png");
     xpos = 1136;
@@ -17,6 +18,8 @@ class player {
     currentWeapon = 0;
     gunClip = 30;
     boltPosition = 1;
+    swap = new timer(1);
+    reload = new timer(gunAudio[1][currentWeapon].duration());
     dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
   }
   void movement() {
@@ -101,12 +104,12 @@ class player {
     }
   }
   void weapon() {
-    if (keys[13] == true && timer[2] == false) { //If the enter key is pressed
+    if (keys[13] == true && swap.active == false) { //If the enter key is pressed
       currentWeapon = (currentWeapon < 17) ? currentWeapon + 1 : 0;
       gunClip = clipSize[currentWeapon];
-      timer(1, 2);
+      swap = new timer(1);
     }
-    if (keys[32] == true && timer[1] == false) { //If the spacebar is pressed
+    if (keys[32] == true && reload.active == false) { //If the spacebar is pressed
       if (gunAudio[0][currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
@@ -139,16 +142,16 @@ class player {
       }
       boltPosition = (boltPosition < gunRPM[currentWeapon]) ? (boltPosition + 1) : 1;
     }
-    if (keys[82] == true && timer[1] == false) { //If the R key is pressed
-      timer(gunAudio[1][currentWeapon].duration(), 1);
+    if (keys[82] == true && reload.active == false) { //If the R key is pressed
+      reload = new timer(gunAudio[1][currentWeapon].duration());
       gunAudio[1][currentWeapon].play();
     }
-    if (timer[1] == true) {
-      timer(1);
-      gunClip = (timer[1] == false) ? clipSize[currentWeapon] : gunClip;
+    if (reload.active == true) {
+      reload.check();
+      gunClip = (reload.active == false) ? clipSize[currentWeapon] : gunClip;
     }
-    if (timer[2] == true) {
-      timer(2);
+    if (swap.active == true) {
+      swap.check();
     }
   }
 }
