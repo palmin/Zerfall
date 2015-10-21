@@ -7,20 +7,19 @@ void printText(String text, int x, int y, int z, PFont font, int size, color fil
 }
 class timer {
   float duration, elapsed, start;
-  timer(float d, int identifier) {
-    timerInfo[1][identifier] = 60 * minute() + second() + (millis() * .0001);
-    timerInfo[0][identifier] = 60 * minute() + second() + (millis() * .0001);
-    timerInfo[2][identifier] = d;
+  timer(float duration) {
+    start = 60 * minute() + second() + (millis() * .0001);
+    elapsed = 60 * minute() + second() + (millis() * .0001);
   }
   void check() {
-    timerInfo[1][identifier]= 60 * minute() + second() + (millis() * .0001);
+    elapsed = 60 * minute() + second() + (millis() * .0001);
   }
 }
 
 void display() {
   background(0);
   fill(200, 190, 180);
-  camera(player.xpos, player.ypos, 623.5, player.xpos, player.ypos, 0, 0, 1, 0);
+  camera(player.xpos, player.ypos, 623.5, player.xpos + 87, player.ypos + 81, 0, 0, 1, 0);
   ambientLight(127, 127, 127);
   if (player.sprite > 3) {
     float xpos = (player.sprite == (2 | 3 | 6 | 7)) ? player.xpos : player.xpos + 175;
