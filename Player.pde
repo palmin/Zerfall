@@ -19,7 +19,7 @@ class player {
     gunClip = 30;
     boltPosition = 1;
     swap = new timer(1);
-    reload = new timer(gunAudio[1][currentWeapon].duration());
+    reload = new timer(1);
     dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
   }
   void movement() {
@@ -109,7 +109,6 @@ class player {
       if (gunAudio[0][currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
-        pushMatrix();
         int xpos = player.xpos + 75;
         int ypos = player.ypos + 75;
         int step = (player.sprite == 0 || player.sprite == 1) ? -1 : 1;

@@ -3,17 +3,17 @@ PImage bitmap, loading, map, foreground;
 PShape background;
 boolean keys[] = new boolean[128];
 int doors[] = { 800, 445, 805, 725, 
-1505, 445, 1510, 725, 
-2340, 445, 2345, 725,
-1280, 730, 1285, 1020,
-2340, 730, 2345, 1020,
-2340, 1025, 2345, 1300 };
+  1505, 445, 1510, 725, 
+  2340, 445, 2345, 725, 
+  1280, 730, 1285, 1020, 
+  2340, 730, 2345, 1020, 
+  2340, 1025, 2345, 1300 };
 int rooms[] = { 0, 330, 600, 548, 
-1134, 330, 1756, 548, 
-2340, 330, 1920, 980, 
-0, 545, 961, 768, 
-961, 545, 2340, 768, 
-0, 765, 2340, 980 };
+  1134, 330, 1756, 548, 
+  2340, 330, 1920, 980, 
+  0, 545, 961, 768, 
+  961, 545, 2340, 768, 
+  0, 765, 2340, 980 };
 PFont orbitron;
 player player;
 zombieClass zombies[];
@@ -22,6 +22,7 @@ void setup() {
   fullScreen(P3D);
   noCursor();
   smooth(2);
+  noStroke();
   bitmap = loadImage("Maps/bitmap.png");
   loading = loadImage("Images/loading.png");
   map = loadImage("Maps/map.png");
@@ -55,6 +56,36 @@ void draw() {
     zombie.movement();
   }
   display();
+}
+
+void display() {
+  background(0);
+  fill(200, 190, 180);
+  camera(player.xpos + 87, player.ypos + 81, 623.5, player.xpos + 87, player.ypos + 81, 0, 0, 1, 0);
+  ambientLight(127, 127, 127);
+  if (player.sprite > 3) {
+    float xpos = (player.sprite == (2 | 3 | 6 | 7)) ? player.xpos : player.xpos + 175;
+    float ypos = player.ypos + 75;
+    fill(255, 255, 127);
+    pointLight(255, 127, 0, xpos, ypos, 40);
+  }
+  translate(0, 0, -1);
+  shape(background);
+  translate(0, 0, 1);
+  image(player.sheet.get(player.sprite * 175, 0, 175, 161), player.xpos, player.ypos);
+  for (zombieClass zombie : zombies) {
+    image(zombie.sheet.get(zombie.sprite * 100, 0, 100, 162), zombie.xpos, zombie.ypos);
+  }
+  image(foreground, 0, 0);
+  fill(255);
+  pushMatrix();
+  lights();
+  hint(DISABLE_DEPTH_TEST);
+  camera();
+  int x = int(map(2500, 0, 2560, 0, width));
+  int y = int(map(1400, 0, 1440, 0, height));
+  printText(str(player.gunClip) + "/" + str(player.clipSize[player.currentWeapon]), x, y, 10, orbitron, 144, #888888, RIGHT);
+  popMatrix();
 }
 
 void keyPressed() { 

@@ -60,8 +60,10 @@ class zombieClass {
     }
   }
   void spawn() {
-    if (zombieCache > 0 && zombie.health <= 0) {
-      zombie = new zombieClass(int(random(1,3)));
+    for (zombieClass zombie : zombies) {
+      if (zombieCache > 0 && zombie.health <= 0) {
+        zombie = new zombieClass(int(random(1, 3)));
+      }
     }
   }
 }
