@@ -60,7 +60,7 @@ class player {
           color c = bitmap.get(x, y); 
           collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
           if (c == color(255, 0, 0) && keys[69] == true) {
-            doors(x, y);
+            	doors(x, y);
           }
         }
       }
@@ -122,7 +122,7 @@ class player {
               if (x > zombie.xpos && x < zombie.xpos + 100 && ypos > zombie.ypos && ypos < zombie.ypos + 162) {
                 zombie.health -= 10;
                 if (zombie.health <= 0) {
-                  zombie = new zombieClass(int(random(1,3)));
+                  //zombie = new zombieClass(int(random(1,3)));
                 }
                 condition = true;
                 break;
