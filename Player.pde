@@ -1,5 +1,5 @@
 class player {
-  PImage sheet;
+  PImage temp, sheet[];
   String gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", 
     "M1928", "MP40", "M60", "M9", "P08", "PPK", "RPK", "Stoner63", "Uzi" };
   int sprite, xpos, ypos, yspeed, currentWeapon, gunClip, 
@@ -10,7 +10,11 @@ class player {
   SoundFile gunAudio[][] = new SoundFile[2][18], dryfire;
   timer swap, reload;
   player() {
-    sheet = loadImage("Sprites/player.png");
+    temp = loadImage("Sprites/player.png");
+    sheet = new PImage[8];
+    for (i = 0; i < 8; i++) {
+      sheet[i] = temp.get(i * 175, 0, 175, 161);
+    }
     xpos = 1136;
     ypos = 470;
     sprite = 0;
@@ -61,14 +65,11 @@ class player {
         }
       }
     }
-    if (keys[65] == true && collision[3] == false) {
-      xpos -= 5;
-      sprite = (collision[1] == true && keys[' '] == false) ? 0 : sprite;
-    }
-    if (keys[68] == true && collision[4] == false) {
-      xpos += 5;
-      sprite = (collision[1] == true && keys[' '] == false) ? 2 : sprite;
-    }
+    
+      xpos -= (keys[65] == true && collision[3] == false) ? 5 : 0;
+      sprite = (collision[1] == true && keys[' '] == false && keys[65] == true && collision[3] == false) ? 0 : sprite;
+      xpos += (keys[68] == true && collision[4] == false) ? 5 : 0;
+      sprite = (collision[1] == true && keys[' '] == false && keys[68] == true && collision[4] == false) ? 2 : sprite;
     if (keys[87] == true && collision[1] == true && collision[2] == false) {
       yspeed = -10;
       collision[1] = false;
@@ -83,7 +84,7 @@ class player {
     ypos += (collision[1] == false) ? yspeed : 0;
     if (sprite > 3 && boltPosition != 2) {
       sprite -= 4;
-    } else if (boltPosition == 2 && sprite < 4 && keys[32] == true && gunClip > 0) {
+    } else if (keys[32] == true && gunClip > 0) {
       sprite += 4;
     }
   }
