@@ -20,13 +20,15 @@ zombieClass zombies[];
 
 void setup() {
   fullScreen(P3D);
+  int d = displayDensity();
+  pixelDensity(d);
   noCursor();
   smooth(2);
   noStroke();
-  bitmap = loadImage("Maps/bitmap.png");
+  bitmap = requestImage("Maps/bitmap.png");
   loading = loadImage("Images/loading.png");
-  map = loadImage("Maps/map.png");
-  foreground = loadImage("Maps/foreground.png");
+  map = requestImage("Maps/map.png");
+  foreground = requestImage("Maps/foreground.png");
   image(loading, 0, 0);
   player = new player();
   zombies = new zombieClass[8];
@@ -46,7 +48,7 @@ void setup() {
   background.vertex(2560, 1440, 0, map.width, map.height);
   background.vertex(0, 1440, 0, 0, map.height);
   background.endShape(CLOSE);
-  orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, displayWidth)), true);
+  orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, width)), true);
 }
 
 void draw() {
@@ -72,7 +74,7 @@ void display() {
   translate(0, 0, -1);
   shape(background);
   translate(0, 0, 1);
-  image(player.sheet.get(player.sprite * 175, 0, 175, 161), player.xpos, player.ypos);
+  image(player.sheet[player.sprite], player.xpos, player.ypos);
   for (zombieClass zombie : zombies) {
     image(zombie.sheet.get(zombie.sprite * 100, 0, 100, 162), zombie.xpos, zombie.ypos);
   }
