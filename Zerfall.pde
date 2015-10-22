@@ -55,7 +55,9 @@ void draw() {
   player.weapon();
   player.movement();
   for (zombieClass zombie : zombies) {
-    zombie.movement();
+    if (zombie.health > 0) {
+      zombie.movement();
+    }
   }
   display();
 }
