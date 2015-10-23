@@ -11,13 +11,13 @@ class timer {
   boolean active;
   timer(float d) {
     duration = d;
-    start = 60 * minute() + second() + (millis() * .0001);
+    start = 3600 * hour() + 60 * minute() + second() + millis() * .0001;
     elapsed = 0;
     active = true;
   }
   void check() {
-    elapsed = 60 * minute() + second() + (millis() * .0001) - start;
-    if (elapsed >= duration) {
+    elapsed = 60 * minute() + second() + millis() * .0001 - start;
+    if (elapsed > duration) {
       active = false;
     }
   }
