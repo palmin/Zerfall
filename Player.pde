@@ -12,7 +12,7 @@ class player {
   player() {
     temp = loadImage("Sprites/player.png");
     sheet = new PImage[8];
-    for (i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
       sheet[i] = temp.get(i * 175, 0, 175, 161);
     }
     xpos = 1136;
@@ -84,7 +84,7 @@ class player {
     ypos += (collision[1] == false) ? yspeed : 0;
     if (sprite > 3 && boltPosition != 2) {
       sprite -= 4;
-    } else if (keys[32] == true && gunClip > 0) {
+    } else if (keys[32] == true && gunClip > 0 && sprite <= 3) {
       sprite += 4;
     }
   }
@@ -101,6 +101,13 @@ class player {
     }
   }
   void weapon() {
+    if (reload.active == true) {
+      reload.check();
+      gunClip = (reload.active == false) ? clipSize[currentWeapon] : gunClip;
+    }
+    if (swap.active == true) {
+      swap.check();
+    }
     if (keys[13] == true && swap.active == false) { //If the enter key is pressed
       currentWeapon = (currentWeapon < 17) ? currentWeapon + 1 : 0;
       gunClip = clipSize[currentWeapon];
@@ -142,12 +149,6 @@ class player {
       reload = new timer(gunAudio[1][currentWeapon].duration());
       gunAudio[1][currentWeapon].play();
     }
-    if (reload.active == true) {
-      reload.check();
-      gunClip = (reload.active == false) ? clipSize[currentWeapon] : gunClip;
-    }
-    if (swap.active == true) {
-      swap.check();
-    }
+    
   }
 }

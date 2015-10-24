@@ -20,15 +20,15 @@ zombieClass zombies[];
 
 void setup() {
   fullScreen(P3D);
-  int d = displayDensity();
-  pixelDensity(d);
   noCursor();
   smooth(2);
   noStroke();
-  bitmap = requestImage("Maps/bitmap.png");
+  frameRate(60);
+  bitmap = loadImage("Maps/bitmap.png");
+  bitmap.resize(width, height);
   loading = loadImage("Images/loading.png");
-  map = requestImage("Maps/map.png");
-  foreground = requestImage("Maps/foreground.png");
+  map = loadImage("Maps/map.png");
+  foreground = loadImage("Maps/foreground.png");
   image(loading, 0, 0);
   player = new player();
   zombies = new zombieClass[8];
@@ -44,9 +44,9 @@ void setup() {
   background.beginShape();
   background.texture(map);
   background.vertex(0, 0, 0, 0, 0);
-  background.vertex(2560, 0, 0, map.width, 0);
-  background.vertex(2560, 1440, 0, map.width, map.height);
-  background.vertex(0, 1440, 0, 0, map.height);
+  background.vertex(width, 0, 0, map.width, 0);
+  background.vertex(width, height, 0, map.width, map.height);
+  background.vertex(0, height, 0, 0, map.height);
   background.endShape(CLOSE);
   orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, width)), true);
 }
@@ -60,36 +60,6 @@ void draw() {
     }
   }
   display();
-}
-
-void display() {
-  background(0);
-  fill(200, 190, 180);
-  camera(player.xpos + 87, player.ypos + 81, 623.5, player.xpos + 87, player.ypos + 81, 0, 0, 1, 0);
-  ambientLight(127, 127, 127);
-  if (player.sprite > 3) {
-    float xpos = (player.sprite == (2 | 3 | 6 | 7)) ? player.xpos : player.xpos + 175;
-    float ypos = player.ypos + 75;
-    fill(255, 255, 127);
-    pointLight(255, 127, 0, xpos, ypos, 40);
-  }
-  translate(0, 0, -1);
-  shape(background);
-  translate(0, 0, 1);
-  image(player.sheet[player.sprite], player.xpos, player.ypos);
-  for (zombieClass zombie : zombies) {
-    image(zombie.sheet.get(zombie.sprite * 100, 0, 100, 162), zombie.xpos, zombie.ypos);
-  }
-  image(foreground, 0, 0);
-  fill(255);
-  pushMatrix();
-  lights();
-  hint(DISABLE_DEPTH_TEST);
-  camera();
-  int x = int(map(2500, 0, 2560, 0, width));
-  int y = int(map(1400, 0, 1440, 0, height));
-  printText(str(player.gunClip) + "/" + str(player.clipSize[player.currentWeapon]), x, y, 10, orbitron, 144, #888888, RIGHT);
-  popMatrix();
 }
 
 void keyPressed() { 
