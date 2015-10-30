@@ -7,7 +7,7 @@ int doors[] = { 800, 445, 805, 725,
   2340, 445, 2345, 725, 
   1280, 730, 1285, 1020, 
   2340, 730, 2345, 1020, 
-  2340, 1025, 2345, 1300 };
+  2340, 1025, 2345, 1300 }, smoothing;
 int rooms[] = { 0, 330, 600, 548, 
   1134, 330, 1756, 548, 
   2340, 330, 1920, 980, 
@@ -18,14 +18,22 @@ PFont orbitron;
 player player;
 zombieClass zombies[];
 
-void setup() {
+void settings() {
   fullScreen(P3D);
+  //size(1280, 720, P3D);
+  if (smoothing == 0) {
+    noSmooth();
+  } else if (smoothing <= 8 && smoothing % 2 != 0) {
+    smooth(smoothing);
+  }
+}
+  
+
+void setup() {
   noCursor();
-  smooth(2);
   noStroke();
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
-  bitmap.resize(width, height);
   loading = loadImage("Images/loading.png");
   map = loadImage("Maps/map.png");
   foreground = loadImage("Maps/foreground.png");
@@ -37,18 +45,18 @@ void setup() {
     player.gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + player.gunID[i] + " Reload.ogg");
   }
   int index = 0;
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 8; i++)
     zombies[index++] = new zombieClass(int(random(1, 3)));
-  }
   background = createShape();
   background.beginShape();
   background.texture(map);
   background.vertex(0, 0, 0, 0, 0);
-  background.vertex(width, 0, 0, map.width, 0);
-  background.vertex(width, height, 0, map.width, map.height);
-  background.vertex(0, height, 0, 0, map.height);
+  background.vertex(width * 2, 0, 0, map.width, 0);
+  background.vertex(width * 2, height * 2, 0, map.width, map.height);
+  background.vertex(0, height * 2, 0, 0, map.height);
   background.endShape(CLOSE);
   orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, width)), true);
+  loading = new PImage();
 }
 
 void draw() {

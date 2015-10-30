@@ -15,8 +15,8 @@ class player {
     for (int i = 0; i < 8; i++) {
       sheet[i] = temp.get(i * 175, 0, 175, 161);
     }
-    xpos = 1136;
-    ypos = 470;
+    xpos = 2272;
+    ypos = 940;
     sprite = 0;
     yspeed = 1;
     currentWeapon = 0;
@@ -46,11 +46,13 @@ class player {
     if (keys[65] == true || keys[69] == true) {
       for (int x = xpos + 20; x <= xpos + 25; x++) {
         for (int y = ypos; y<= ypos + 161; y++) {   
-          color c = bitmap.get(x, y); 
-          collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
-          if (c == color(255, 0, 0) && keys[69] == true) {
-            doors(x, y);
+          color c = bitmap.get(x, y);
+          if (collision[3] == true) {
+            collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
+            xpos += (collision[3] == false) ? x - (xpos + 20) : 0;
           }
+          if (c == color(255, 0, 0) && keys[69] == true)
+            doors(x, y);
         }
       }
     }
@@ -59,27 +61,30 @@ class player {
         for (int y = ypos; y<= ypos + 161; y++) {   
           color c = bitmap.get(x, y); 
           collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
-          if (c == color(255, 0, 0) && keys[69] == true) {
-            	doors(x, y);
-          }
+          if (c == color(255, 0, 0) && keys[69] == true)
+            doors(x, y);
         }
       }
     }
-    
-      xpos -= (keys[65] == true && collision[3] == false) ? 5 : 0;
-      sprite = (collision[1] == true && keys[' '] == false && keys[65] == true && collision[3] == false) ? 0 : sprite;
-      xpos += (keys[68] == true && collision[4] == false) ? 5 : 0;
-      sprite = (collision[1] == true && keys[' '] == false && keys[68] == true && collision[4] == false) ? 2 : sprite;
-    if (keys[87] == true && collision[1] == true && collision[2] == false) {
-      yspeed = -10;
-      collision[1] = false;
-      sprite += (sprite % 2 == 0) ? 1 : 0;
+
+    if (keys[65] == true && collision[3] == false) {
+      xpos -= 5;
+      sprite = (collision[1] == true && keys[' '] == false) ? 0 : sprite;
     }
-    if (keys[87] == true && collision[0] == true && collision[2] == false) {
-      yspeed = -4;
-      collision[1] = false;
+
+    xpos += (keys[68] == true && collision[4] == false) ? 5 : 0;
+    sprite = (collision[1] == true && keys[' '] == false && keys[68] == true && collision[4] == false) ? 2 : sprite;
+    if (keys[87] == true && collision[2] == false) {
+      if (collision[1] == true) {
+        yspeed = -10;
+        collision[1] = false;
+        sprite += (sprite % 2 == 0) ? 1 : 0;
+      }
+      if (collision[0] == true) {
+        yspeed = -4;
+        collision[1] = false;
+      }
     }
-    yspeed = (collision[2] == true) ? 1 : yspeed;
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
     ypos += (collision[1] == false) ? yspeed : 0;
     if (sprite > 3 && boltPosition != 2) {
@@ -105,16 +110,16 @@ class player {
       reload.check();
       gunClip = (reload.active == false) ? clipSize[currentWeapon] : gunClip;
     }
-    if (swap.active == true) {
+    if (swap.active == true)
       swap.check();
-    }
+
     if (keys[13] == true && swap.active == false) { //If the enter key is pressed
       currentWeapon = (currentWeapon < 17) ? currentWeapon + 1 : 0;
       gunClip = clipSize[currentWeapon];
       swap = new timer(1);
     }
     if (keys[32] == true && reload.active == false) { //If the spacebar is pressed
-      if (gunAudio[0][currentWeapon] != null && boltPosition == 1 && gunClip > 0) { 
+      if (boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][currentWeapon].play(); //Plays the weapon sound
         gunClip = gunClip - 1;
         int xpos = player.xpos + 75;
@@ -136,19 +141,21 @@ class player {
               }
             }
           }
-          if (c == (color(255, 0, 0) | color(0))) {
+          if (c == (color(255, 0, 0) | color(0)))
             break;
-          }
         }
       } else if (boltPosition == 1 && gunClip == 0 ) {
         dryfire.play();
       }
-      boltPosition = (boltPosition < gunRPM[currentWeapon]) ? (boltPosition + 1) : 1;
+    }
+    if (keys[32] == true && boltPosition <= gunRPM[currentWeapon]) {
+      boltPosition += 1;
+    } else {
+      boltPosition = 1;
     }
     if (keys[82] == true && reload.active == false) { //If the R key is pressed
       reload = new timer(gunAudio[1][currentWeapon].duration());
       gunAudio[1][currentWeapon].play();
     }
-    
   }
 }
