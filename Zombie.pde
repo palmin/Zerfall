@@ -5,8 +5,8 @@ class zombieClass {
   color c = color(0);
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie.png");
-    xpos = 1136;
-    ypos = 550;
+    xpos = 2272;
+    ypos = 940;
     sprite = 0;
     yspeed = 1;
     xspeed = speed;
@@ -61,10 +61,10 @@ class zombieClass {
     }
   }
   void spawn() {
-    for (zombieClass zombie : zombies) {
-      if (zombieCache > 0 && zombie.health <= 0) {
-        zombie = new zombieClass(int(random(1, 3)));
-      }
-    }
+    //for (zombieClass zombie : zombies) {
+    //  if (zombieCache > 0 && zombie.health <= 0) {
+    //    zombie = new zombieClass(int(random(1, 3)));
+    //  }
+    //}
   }
 }
