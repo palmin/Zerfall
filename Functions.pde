@@ -43,10 +43,10 @@ class timer {
 }
 
 void parseBitmap(PImage source, color index) {
-  doorx = new IntList();
-  doory = new IntList();
-  doorx2 = new IntList();
-  doory2 = new IntList();
+  IntList doorx = new IntList();
+  IntList doory = new IntList();
+  IntList doorx2 = new IntList();
+  IntList doory2 = new IntList();
   for (int x = 0; x < source.width; x++) {
     for (int y = 0; y < source.height; y++) {
       if (source.get(x, y) == index && source.get(x-1, y) != index && source.get(x, y-1) != index) {
@@ -73,4 +73,8 @@ void parseBitmap(PImage source, color index) {
     doors[3][i] = doory2.get(i);
     println(doors[0][i], doors[1][i], doors[2][i], doors[3][i]);
   }
+  IntList doorx = new IntList();
+  IntList doory = new IntList();
+  IntList doorx2 = new IntList();
+  IntList doory2 = new IntList();
 }
