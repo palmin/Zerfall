@@ -3,7 +3,6 @@ PImage bitmap, loading, map, foreground;
 PShape background;
 boolean keys[] = new boolean[128];
 int doors[][], smoothing = 2;
-IntList doorx, doory, doorx2, doory2;
 PFont orbitron;
 player player;
 zombieClass zombies[];
