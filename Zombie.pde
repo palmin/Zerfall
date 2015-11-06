@@ -1,8 +1,8 @@
 class zombieClass {
   PImage sheet;
-  int sprite, xpos, ypos, playerx, playery, health, yspeed, xspeed, zombieCache;
+  int sprite, xpos, ypos, health, yspeed, xspeed, zombieCache;
   boolean[] collision;
-  color c = color(0);
+  color c;
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie.png");
     xpos = 2272;
@@ -17,8 +17,6 @@ class zombieClass {
     for (int i = 0; i < 5; i++) {
       collision[i] = false;
     }
-    playerx = player.xpos + 25;
-    playery = player.ypos;
     for (int x = xpos; x <= xpos + 100; x++) {
       for (int y = ypos + 161; y <= ypos + 161 + abs(yspeed); y++) {
         c = bitmap.get(x, y);
@@ -45,26 +43,19 @@ class zombieClass {
       }
     }
     yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
-    if (collision[0] == true && playery < ypos && collision[2] == false) {
+    if (collision[0] == true && player.ypos < ypos && collision[2] == false) {
       yspeed = -xspeed;
       collision[1] = false;
     }
     if (collision[1] == false) {
       ypos += yspeed;
     }
-    if (playerx > xpos && playery > ypos - 40 && playery < ypos + 40) {
+    if (player.xpos > xpos && player.ypos > ypos - 40 && player.ypos < ypos + 40) {
       xpos = xpos + xspeed;
       sprite = 1;
-    } else if (playerx + 50 < xpos && playery > ypos - 5 && playery < ypos + 5) {
+    } else if (player.xpos + 50 < xpos && player.ypos > ypos - 5 && player.ypos < ypos + 5) {
       xpos = xpos - xspeed;
       sprite = 0;
     }
-  }
-  void spawn() {
-    //for (zombieClass zombie : zombies) {
-    //  if (zombieCache > 0 && zombie.health <= 0) {
-    //    zombie = new zombieClass(int(random(1, 3)));
-    //  }
-    //}
   }
 }

@@ -10,6 +10,10 @@ class player {
   SoundFile gunAudio[][] = new SoundFile[2][18], dryfire;
   timer swap, reload;
   player() {
+    for (int i = 0; i < gunID.length; i++) {
+      gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
+      gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Reload.ogg");
+    }
     temp = loadImage("Sprites/player.png");
     sheet = new PImage[8];
     for (int i = 0; i < 8; i++) {
@@ -108,7 +112,8 @@ class player {
   void weapon() {
     if (reload.active == true) {
       reload.check();
-      gunClip = (reload.active == false) ? clipSize[weapon] : gunClip;
+      if (reload.active == false)
+        gunClip = clipSize[weapon];
     }
     if (swap.active == true) {
       swap.check();
@@ -117,11 +122,11 @@ class player {
     if (keys[70] == true && swap.active == false) {
       weapon = (weapon < 17) ? weapon + 1 : 0;
       gunClip = clipSize[weapon];
-      swap = new timer(.25);
+      swap = new timer(.2);
     }
     if (keys[32] == true && reload.active == false) { //If the spacebar is pressed
       if (boltPosition == 1 && gunClip > 0) { 
-        gunAudio[0][weapon].play(); //Plays the weapon sound
+        gunAudio[0][weapon].play(); //Plays the weapon gunshot sound
         gunClip = gunClip - 1;
       } else if (boltPosition == 1 && gunClip == 0 ) {
         dryfire.play();
