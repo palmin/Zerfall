@@ -1,7 +1,7 @@
 import processing.sound.*;
 PImage bitmap, loading, map, foreground;
 PShape background;
-boolean keys[] = new boolean[128];
+boolean keys[] = new boolean[256];
 int doors[][], smoothing = 2;
 PFont orbitron;
 player player;
