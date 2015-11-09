@@ -138,11 +138,7 @@ class player {
         dryfire.play();
       }
     }
-    if (keys[32] == true && boltPosition <= gunRPM[weapon]) {
-      boltPosition += 1;
-    } else {
-      boltPosition = 1;
-    }
+    boltPosition = (keys[32] == true && boltPosition <= gunRPM[weapon]) ? boltPosition + 1 : 1;
     if (keys[82] == true && reload.active == false) { //If the R key is pressed
       reload = new timer(gunAudio[1][weapon].duration());
       gunAudio[1][weapon].play();
