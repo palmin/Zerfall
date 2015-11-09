@@ -1,33 +1,35 @@
 class player {
-  PImage temp, sheet[];
-  String gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", 
-    "M1928", "M60", "M9", "MP40", "PPK", "RPK", "Stoner63", "Uzi" };
-  int sprite, xpos, ypos, yspeed, weapon, gunClip, 
+  PImage 
+    sheet[] = new PImage[8];
+  String
+    gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", "M1928", "M60", "M9", "MP40", "PPK", "RPK", "Stoner63", "Uzi" };
+  int
+    sprite = 0,
+    xpos = 2272,
+    ypos = 940,
+    yspeed = 1,
+    weapon = 0,
+    gunClip = 30, 
     gunRPM[] = { 6, 5, 120, 48, 3, 6, 600, 144, 6, 5, 6, 90, 7, 240, 6, 4, 6 }, 
     clipSize[] = { 30, 30, 10, 30, 25, 20, 5, 7, 20, 50, 100, 10, 32, 8, 75, 150, 32 }, 
     boltPosition = 0;
-  boolean collision[] = new boolean[5];
-  SoundFile gunAudio[][] = new SoundFile[2][18], dryfire;
-  timer swap, reload;
+  boolean
+    collision[] = new boolean[5];
+  SoundFile
+    gunAudio[][] = new SoundFile[2][18],
+    dryfire;
+  timer 
+    swap = new timer(1),
+    reload = new timer(1);
   player() {
     for (int i = 0; i < gunID.length; i++) {
       gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
       gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Reload.ogg");
     }
-    temp = loadImage("Sprites/player.png");
-    sheet = new PImage[8];
+    PImage temp = loadImage("Sprites/player.png");
     for (int i = 0; i < 8; i++) {
       sheet[i] = temp.get(i * 175, 0, 175, 161);
     }
-    temp = new PImage();
-    xpos = 2272;
-    ypos = 940;
-    sprite = 0;
-    yspeed = 1;
-    weapon = 0;
-    gunClip = 30;
-    swap = new timer(1);
-    reload = new timer(1);
     dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
   }
   void movement() {
@@ -37,23 +39,29 @@ class player {
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         color c = bitmap.get(x, y);
-        collision[1] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[1]; //This checks the lower bound
-        collision[0] = (c == color(0, 0, 255)) ? true : collision[0];
+        if (c == color(255, 0, 0) || c == color(0))
+          collision[1] = true; //Lower bound
+        if (c == color(0, 0, 255))
+          collision[0] = true;
       }
     }
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y--) {
         color c = bitmap.get(x, y);
-        collision[2] = (c == color(0, 0, 0)) ? true : collision[2]; //This checks the upper bound
+        if (c == color(0))
+          collision[2] = true; //Upper bound
       }
     }
     if (keys[65] == true || keys[69] == true) {
       for (int x = xpos + 20; x <= xpos + 25; x++) {
         for (int y = ypos; y<= ypos + 161; y++) {   
           color c = bitmap.get(x, y);
-          if (collision[3] == true) {
-            collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
-            xpos += (collision[3] == false) ? x - (xpos + 20) : 0;
+          if (collision[3] == false && (c == color(255, 0, 0) || c == color(0))) {
+            collision[3] = true; //Left bound
+            if (keys[65] == true) {
+              xpos -= 5;
+              sprite = (collision[1] == true && keys[' '] == false) ? 0 : sprite;
+            }
           }
           if (c == color(255, 0, 0) && keys[69] == true)
             doors(x, y);
@@ -64,16 +72,11 @@ class player {
       for (int x = xpos + 150; x <= xpos + 155; x++) { 
         for (int y = ypos; y<= ypos + 161; y++) {   
           color c = bitmap.get(x, y); 
-          collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
+          collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //Right bound
           if (c == color(255, 0, 0) && keys[69] == true)
             doors(x, y);
         }
       }
-    }
-
-    if (keys[65] == true && collision[3] == false) {
-      xpos -= 5;
-      sprite = (collision[1] == true && keys[' '] == false) ? 0 : sprite;
     }
 
     xpos += (keys[68] == true && collision[4] == false) ? 5 : 0;
