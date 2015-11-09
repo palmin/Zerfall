@@ -19,7 +19,7 @@ class player {
     gunAudio[][] = new SoundFile[2][18],
     dryfire;
   timer 
-    swap = new timer(1),
+    swap = new timer(.2),
     reload = new timer(1);
   player() {
     for (int i = 0; i < gunID.length; i++) {
@@ -33,9 +33,8 @@ class player {
     dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
   }
   void movement() {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++)
       collision[i] = false;
-    }
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         color c = bitmap.get(x, y);
