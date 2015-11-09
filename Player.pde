@@ -52,35 +52,39 @@ class player {
           collision[2] = true; //Upper bound
       }
     }
-    if (keys[65] == true || keys[69] == true) {
-      for (int x = xpos + 20; x <= xpos + 25; x++) {
-        for (int y = ypos; y<= ypos + 161; y++) {   
-          color c = bitmap.get(x, y);
-          if (collision[3] == false && (c == color(255, 0, 0) || c == color(0))) {
-            collision[3] = true; //Left bound
-            if (keys[65] == true) {
-              xpos -= 5;
-              sprite = (collision[1] == true && keys[' '] == false) ? 0 : sprite;
-            }
+    for (int x = xpos + 20; x <= xpos + 25; x++) {
+      for (int y = ypos; y<= ypos + 161; y++) {   
+        color c = bitmap.get(x, y);
+        if (collision[3] == false && (c == color(255, 0, 0) || c == color(0))) {
+          collision[3] = true; //Left bound
+          if (keys[65] == true) {
+            xpos -= 5;
+            if (collision[1] == true && keys[' '] == false && boltPosition != 1) 
+              sprite = 0;
           }
-          if (c == color(255, 0, 0) && keys[69] == true)
-            doors(x, y);
         }
+        if (c == color(255, 0, 0) && keys[69] == true)
+          doors(x, y);
       }
     }
+    
     if (keys[68] == true || keys[69] == true) {
       for (int x = xpos + 150; x <= xpos + 155; x++) { 
         for (int y = ypos; y<= ypos + 161; y++) {   
           color c = bitmap.get(x, y); 
-          collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //Right bound
+          if (collision[4] == false && (c == color(255, 0, 0) || c == color(0))) {
+          collision[4] = true; //Right bound
+          if (keys[65] == true) {
+            xpos += 5;
+            if (collision[1] == true && keys[' '] == false && boltPosition != 1) 
+              sprite = 2;
+          }
+        }
           if (c == color(255, 0, 0) && keys[69] == true)
             doors(x, y);
         }
       }
     }
-
-    xpos += (keys[68] == true && collision[4] == false) ? 5 : 0;
-    sprite = (collision[1] == true && keys[' '] == false && keys[68] == true && collision[4] == false) ? 2 : sprite;
     if (keys[87] == true && collision[2] == false) {
       if (collision[1] == true) {
         yspeed = -10;
@@ -118,9 +122,8 @@ class player {
       if (reload.active == false)
         gunClip = clipSize[weapon];
     }
-    if (swap.active == true) {
+    if (swap.active == true)
       swap.check();
-    }
 
     if (keys[70] == true && swap.active == false) {
       weapon = (weapon < 17) ? weapon + 1 : 0;
