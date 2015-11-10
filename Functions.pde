@@ -26,19 +26,18 @@ void printText(String text, int x, int y, PFont font, int size, color fill, int 
 }
 
 class timer {
-  float elapsed, start, duration;
+  float start, duration;
   boolean active;
-  timer(float d) {
-    duration = d;
-    start = millis() * .001;
-    elapsed = 0;
-    active = true;
+  timer() {
   }
   void check() {
-    elapsed = millis() * .001 - start;
-    if (elapsed > duration)
+    if (millis() * .001 - start > duration)
       active = false;
   }
+  void start(float d) {
+    duration = d;
+    start = millis() * .001;
+    active = true;
 }
 
 void parseBitmap(PImage source, color index) {
