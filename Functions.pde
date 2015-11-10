@@ -7,14 +7,12 @@ void display() {
     image(zombie.sheet.get(zombie.sprite * 100, 0, 100, 162), zombie.xpos, zombie.ypos);
   }
   image(foreground, 0, 0);
-  printText(str(player.gunClip) + "/" + str(player.clipSize[player.weapon]), 2500, 1400, orbitron, 72, #FFFFFF, RIGHT);
-  printText(player.gunID[player.weapon], 2500, 1325, orbitron, 48, #EEEEEE, RIGHT);
-  printText(str(player.collision[0]) + ", " + str(player.collision[1]) + ", " + str(player.collision[2]) + ", " + str(player.collision[3]) + ", " + str(player.collision[4]), 1000, 30, orbitron, 24, #EEEEEE, LEFT);
+  printText(str(player.gunClip) + "/" + str(player.clipSize[player.weapon]), 2500, 1400, 72, #FFFFFF, RIGHT);
+  printText(player.gunID[player.weapon], 2500, 1325, 48, #EEEEEE, RIGHT);
   printText(str(int(frameRate)), 10, 30, orbitron, 24, #FFFFFF, LEFT);
 }
 
 void printText(String text, int x, int y, PFont font, int size, color fill, int align) {
-  textFont(font);
   textSize(int(map(size, 0, 2560, 0, width)));
   fill(fill);
   textAlign(align);
@@ -43,37 +41,31 @@ class timer {
 
 void parseBitmap(PImage source, color index) {
   IntList
-  doorx = new IntList(),
-  doory = new IntList(),
-  doorx2 = new IntList(),
-  doory2 = new IntList();
-  for (int x = 0; x < source.width; x++) {
-    for (int y = 0; y < source.height; y++) {
-      if (source.get(x, y) == index && source.get(x-1, y) != index && source.get(x, y-1) != index) {
-        int x2 = x;
-        int y2 = y;
-        while (source.get(x2 + 1, y2) == index) {
-          x2++;
+    tempDoor[] = new IntList[4];
+  int
+    temp[] = new int[4];
+  for (temp[0] = 0; temp[0] < source.width; temp[0]++) {
+    for (temp[1] = 0; temp[1] < source.height; temp[1]++) {
+      if (source.get(temp[0], temp[1]) == index && source.get(temp[0]-1, temp[1]) != index && source.get(temp[0], temp[1]-1) != index) {
+        temp[2] = temp[0];
+        temp[3] = temp[1];
+        while (source.get(temp[2] + 1, temp[3]) == index) {
+          temp[2]++;
         }
-        while (source.get(x2, y2 + 1) == index) {
-          y2++;
+        while (source.get(temp[2], temp[3] + 1) == index) {
+          temp[3]++;
         }
-        doorx.append(x);
-        doory.append(y);
-        doorx2.append(x2);
-        doory2.append(y2);
+        for (int i = 0; i < 3; i++)
+          tempDoor[0].append(temp[0]);
       }
     }
   }
-  doors = new int[4][doorx.size()];
-  for (int i = 0; i < doorx.size(); i++) {
-    doors[0][i] = doorx.get(i);
-    doors[1][i] = doory.get(i);
-    doors[2][i] = doorx2.get(i);
-    doors[3][i] = doory2.get(i);
+  doors = new int[4][tempDoor[0].size()];
+  for (int i = 0; i < tempDoor[0].size(); i++) {
+    for (int j = 0; j < 3; j++) {
+      doors[j][i] = tempDoor[j].get(i);
+    }
   }
-  doorx = new IntList();
-  doory = new IntList();
-  doorx2 = new IntList();
-  doory2 = new IntList();
+  temp = new IntList();
+  doorTemp = new IntList();
 }
