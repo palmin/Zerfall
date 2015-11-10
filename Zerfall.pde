@@ -10,7 +10,6 @@ void settings() {
   size(1280, 720, P3D);
 }
 
-
 void setup() {
   noCursor();
   noStroke();
