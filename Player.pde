@@ -19,8 +19,8 @@ class player {
     gunAudio[][] = new SoundFile[2][18],
     dryfire;
   timer 
-    swap = new timer(.2),
-    reload = new timer(1);
+    swap = new timer(),
+    reload = new timer();
   player() {
     for (int i = 0; i < gunID.length; i++) {
       gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
@@ -127,7 +127,7 @@ class player {
     if (keys[70] == true && swap.active == false) {
       weapon = (weapon < 17) ? weapon + 1 : 0;
       gunClip = clipSize[weapon];
-      swap = new timer(.2);
+      swap.start(.2);
     }
     if (keys[32] == true && reload.active == false) { //If the spacebar is pressed
       if (boltPosition == 1 && gunClip > 0) { 
@@ -139,7 +139,7 @@ class player {
     }
     boltPosition = (keys[32] == true && boltPosition <= gunRPM[weapon]) ? boltPosition + 1 : 1;
     if (keys[82] == true && reload.active == false) { //If the R key is pressed
-      reload = new timer(gunAudio[1][weapon].duration());
+      reload.start(gunAudio[1][weapon].duration());
       gunAudio[1][weapon].play();
     }
   }
