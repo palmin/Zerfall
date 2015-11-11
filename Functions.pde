@@ -41,10 +41,8 @@ class timer {
 void parseBitmap(PImage source, color index) {
   final IntList[]
     tempDoor = new IntList[4];
-  tempDoor[0] = new IntList();
-  tempDoor[1] = new IntList();
-  tempDoor[2] = new IntList();
-  tempDoor[3] = new IntList();
+  for (int i = 0; i < 3; i++)
+  tempDoor[i] = new IntList();
   int
     temp[] = new int[4];
   for (temp[0] = 0; temp[0] < source.width; temp[0]++) {
