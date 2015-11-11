@@ -4,11 +4,11 @@ class player {
   String
     gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", "M1928", "M60", "M9", "MP40", "PPK", "RPK", "Stoner63", "Uzi" };
   int
-    sprite = 0,
-    xpos = 2272,
-    ypos = 940,
-    yspeed = 1,
-    weapon = 0,
+    sprite = 0, 
+    xpos = 2270, 
+    ypos = 940, 
+    yspeed = 1, 
+    weapon = 0, 
     gunClip = 30, 
     gunRPM[] = { 6, 5, 120, 48, 3, 6, 600, 144, 6, 5, 6, 90, 7, 240, 6, 4, 6 }, 
     clipSize[] = { 30, 30, 10, 30, 25, 20, 5, 7, 20, 50, 100, 10, 32, 8, 75, 150, 32 }, 
@@ -16,10 +16,10 @@ class player {
   boolean
     collision[] = new boolean[5];
   SoundFile
-    gunAudio[][] = new SoundFile[2][18],
+    gunAudio[][] = new SoundFile[2][18], 
     dryfire;
   timer 
-    swap = new timer(),
+    swap = new timer(), 
     reload = new timer();
   player() {
     for (int i = 0; i < gunID.length; i++) {
@@ -27,9 +27,9 @@ class player {
       gunAudio[1][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Reload.ogg");
     }
     PImage temp = loadImage("Sprites/player.png");
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++)
       sheet[i] = temp.get(i * 175, 0, 175, 161);
-    }
+    temp = new PImage();
     dryfire = new SoundFile(Zerfall.this, "Sounds/Dry-Fire.ogg");
   }
   void movement() {
@@ -54,36 +54,30 @@ class player {
     for (int x = xpos + 20; x <= xpos + 25; x++) {
       for (int y = ypos; y<= ypos + 161; y++) {   
         color c = bitmap.get(x, y);
-        if (collision[3] == false && (c == color(255, 0, 0) || c == color(0))) {
+        if (c == color(255, 0, 0) || c == color(0))
           collision[3] = true; //Left bound
-          if (keys[65] == true) {
-            xpos -= 5;
-            if (collision[1] == true && keys[' '] == false && boltPosition != 1) 
-              sprite = 0;
-          }
-        }
+        if (c == color(255, 0, 0) && keys[69] == true)
+          println(c);
+        doors(x, y);
+      }
+    }
+    if (keys[68] == true && collision[4] == false)
+      xpos += 5;
+    if (keys[68] == true && collision[1] == true && keys[' '] == false) 
+      sprite = 2;
+    for (int x = xpos + 150; x <= xpos + 155; x++) { 
+      for (int y = ypos; y<= ypos + 161; y++) {   
+        color c = bitmap.get(x, y); 
+        if (collision[4] == false && (c == color(255, 0, 0) || c == color(0)))
+          collision[4] = true; //Right bound
         if (c == color(255, 0, 0) && keys[69] == true)
           doors(x, y);
       }
     }
-    
-    if (keys[68] == true || keys[69] == true) {
-      for (int x = xpos + 150; x <= xpos + 155; x++) { 
-        for (int y = ypos; y<= ypos + 161; y++) {   
-          color c = bitmap.get(x, y); 
-          if (collision[4] == false && (c == color(255, 0, 0) || c == color(0))) {
-          collision[4] = true; //Right bound
-          if (keys[65] == true) {
-            xpos += 5;
-            if (collision[1] == true && keys[' '] == false && boltPosition != 1) 
-              sprite = 2;
-          }
-        }
-          if (c == color(255, 0, 0) && keys[69] == true)
-            doors(x, y);
-        }
-      }
-    }
+    if (keys[65] == true && collision[3] == false)
+      xpos -= 5;
+    if (keys[65] == true && collision[1] == true && keys[' '] == false) 
+      sprite = 0;
     if (keys[87] == true && collision[2] == false) {
       if (collision[1] == true) {
         yspeed = -10;
@@ -103,16 +97,18 @@ class player {
       sprite += 4;
     }
   }
-  void doors(int xpos, int ypos) {
-    for (int i = 0; i < doors[0].length; i++) {
-      if (xpos >= doors[0][i] && xpos <= doors[2][i] + 2 && ypos >= doors[1][i] && ypos <= doors[3][i]) {
-        for (int x = doors[0][i]; x <= doors[2][i]; x++) { 
-          for (int y = doors[1][i]; y < doors[3][i]; y++) {
-            bitmap.set(x, y, color(255));
-          }
-        }
-        break;
+  void doors(int x, int y) {
+    color doorColor = color(255, 0, 0);
+    while (bitmap.get(x - 1, y) == doorColor)
+      x--;
+    while (bitmap.get(x, y - 1) == doorColor)
+      y--;
+    while (bitmap.get(x, y + 1) == doorColor) {
+      while (bitmap.get(x + 1, y) == doorColor) {
+        bitmap.set(x, y, color(255));
+        x++;
       }
+      y++;
     }
   }
   void weapon() {
