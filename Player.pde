@@ -38,10 +38,14 @@ class player {
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
         color c = bitmap.get(x, y);
-        if (c == color(255, 0, 0) || c == color(0))
+        if (c == color(255, 0, 0) || c == color(0)) {
           collision[1] = true; //Lower bound
-        if (c == color(0, 0, 255))
+          continue;
+        }
+        if (c == color(0, 0, 255)) {
           collision[0] = true;
+          continue;
+        }
       }
     }
     for (int x = xpos + 25; x <= xpos + 150; x++) {
