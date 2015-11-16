@@ -1,21 +1,21 @@
 class zombieClass {
-  PImage sheet;
-  int sprite, xpos, ypos, health, yspeed, xspeed, zombieCache;
-  boolean[] collision;
+  PImage
+    sheet = new PImage();
+  int
+    sprite = 0, 
+    xpos = 2270, 
+    ypos = 940, 
+    health = 100, 
+    yspeed = 1, 
+    xspeed = speed;
+  boolean[]
+    collision = new boolean[5];
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie.png");
-    xpos = 2272;
-    ypos = 940;
-    sprite = 0;
-    yspeed = 1;
-    xspeed = speed;
-    collision = new boolean[5];
-    health = 100;
   }
   void movement() {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++)
       collision[i] = false;
-    }
     for (int x = xpos; x <= xpos + 100; x++) {
       for (int y = ypos + 161; y <= ypos + 161 + abs(yspeed); y++) {
         color c = bitmap.get(x, y);
@@ -46,9 +46,8 @@ class zombieClass {
       yspeed = -xspeed;
       collision[1] = false;
     }
-    if (collision[1] == false) {
+    if (collision[1] == false)
       ypos += yspeed;
-    }
     if (player.xpos > xpos && player.ypos > ypos - 40 && player.ypos < ypos + 40) {
       xpos = xpos + xspeed;
       sprite = 1;
