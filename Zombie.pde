@@ -2,7 +2,6 @@ class zombieClass {
   PImage sheet;
   int sprite, xpos, ypos, health, yspeed, xspeed, zombieCache;
   boolean[] collision;
-  color c;
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie.png");
     xpos = 2272;
@@ -19,26 +18,26 @@ class zombieClass {
     }
     for (int x = xpos; x <= xpos + 100; x++) {
       for (int y = ypos + 161; y <= ypos + 161 + abs(yspeed); y++) {
-        c = bitmap.get(x, y);
+        color c = bitmap.get(x, y);
         collision[1] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[1]; //This checks the lower bound
         collision[0] = (c == color(0, 0, 255)) ? true : collision[0];
       }
     }
     for (int x = xpos; x <= xpos + 100; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y--) {
-        c = bitmap.get(x, y);
+        color c = bitmap.get(x, y);
         collision[2] = (c == color(0, 0, 0)) ? true : collision[2]; //This checks the upper bound
       }
     }
     for (int x = xpos; x <= xpos - xspeed; x--) {
       for (int y = ypos; y<= ypos + 162; y++) {   
-        c = bitmap.get(x, y); 
+        color c = bitmap.get(x, y); 
         collision[3] = (c == color(255, 0, 0) || c == color(0, 0, 0)) ? true : collision[3]; //This checks the left bound
       }
     }
     for (int x = xpos + 100; x <= xpos + 100 + xspeed; x++) { 
       for (int y = ypos; y<= ypos + 162; y++) {   
-        c = bitmap.get(x, y); 
+        color c = bitmap.get(x, y); 
         collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
       }
     }
