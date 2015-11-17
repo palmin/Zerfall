@@ -1,11 +1,10 @@
 void display() {
   background(0);
-  translate(-(player.xpos + player.sheet[0].width / 2), -(player.ypos + player.sheet[0].height / 2));
+  translate(-(player.xpos + player.sheet[0].width / 2) + width / 2, -(player.ypos + player.sheet[0].height / 2) + height / 2);
   image(map, 0, 0);
   image(player.sheet[player.sprite], player.xpos, player.ypos);
-  for (zombieClass zombie : zombies) {
+  for (zombieClass zombie : zombies)
     image(zombie.sheet.get(zombie.sprite * 100, 0, 100, 162), zombie.xpos, zombie.ypos);
-  }
   image(foreground, 0, 0);
   printText(str(player.gunClip) + "/" + str(player.clipSize[player.weapon]), 2500, 1400, 72, #FFFFFF, RIGHT);
   printText(player.gunID[player.weapon], 2500, 1325, 48, #EEEEEE, RIGHT);
