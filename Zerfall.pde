@@ -1,15 +1,15 @@
 import
   processing.sound.*;
 PImage
-  bitmap,
-  map,
-  foreground;
+  bitmap = new PImage(),
+  map = new PImage(),
+  foreground = new PImage();
 boolean 
   keys[] = new boolean[256];
-int doors[][];
-PFont orbitron;
-player player;
-ArrayList<zombieClass> zombies;
+PFont
+  final orbitron = new PFont();
+ArrayList<zombieClass>
+  zombies = new ArrayList<zombieClass>();
 
 void settings() {
   size(1280, 720, P2D);
@@ -26,15 +26,13 @@ void setup() {
   bitmap = loadImage("Maps/bitmap.png");
   map = loadImage("Maps/map.png");
   foreground = loadImage("Maps/foreground.png");
-  player = new player();
-  zombies = new ArrayList<zombieClass>();
   orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, width)), true);
   textFont(orbitron);
 }
 
 void draw() {
-  player.weapon();
-  player.movement();
+  weapon();
+  movement();
   for (zombieClass zombie : zombies)
     zombie.movement();
   display();
