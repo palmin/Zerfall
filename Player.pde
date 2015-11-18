@@ -1,4 +1,4 @@
-class player {
+static class player {
   PImage 
     sheet[] = new PImage[8];
   String
@@ -17,7 +17,7 @@ class player {
     collision[] = new boolean[5];
   SoundFile
     gunAudio[][] = new SoundFile[2][18], 
-    dryfire;
+    dryfire = new SoundFile();
   timer 
     swap = new timer(), 
     reload = new timer();
@@ -127,19 +127,20 @@ class player {
     if (keys[70] == true && swap.active == false) {
       weapon = (weapon < 17) ? weapon + 1 : 0;
       gunClip = clipSize[weapon];
-      swap.activate(.2);
+      swap.activate();
+      reload.set(gunAudio[1][weapon].duration());
     }
     if (keys[32] == true && reload.active == false) { //If the spacebar is pressed
       if (boltPosition == 1 && gunClip > 0) { 
         gunAudio[0][weapon].play(); //Plays the weapon gunshot sound
-        gunClip = gunClip - 1;
-      } else if (boltPosition == 1 && gunClip == 0 ) {
+        gunClip--;
+      } else if (boltPosition == 1 && gunClip == 0) {
         dryfire.play();
       }
     }
     boltPosition = (keys[32] == true && boltPosition <= gunRPM[weapon]) ? boltPosition + 1 : 1;
     if (keys[82] == true && reload.active == false) { //If the R key is pressed
-      reload.activate(gunAudio[1][weapon].duration());
+      reload.activate();
       gunAudio[1][weapon].play();
     }
   }
