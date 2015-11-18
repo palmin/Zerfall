@@ -8,8 +8,8 @@ class zombieClass {
     health = 100, 
     yspeed = 1, 
     xspeed = speed;
-  boolean[]
-    collision = new boolean[5];
+  boolean
+    collision[] = new boolean[5];
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie.png");
   }
@@ -41,7 +41,11 @@ class zombieClass {
         collision[4] = (c == color(0, 0, 0) || c == color(255, 0, 0)) ? true : collision[4]; //This checks the right bound
       }
     }
-    yspeed = (collision[1] == true || collision[2] == true) ? 1 : yspeed + 1;
+    if (collision[1] == true || collision[2] == true) {
+      yspeed = 1;
+    } else {
+      yspeed++;
+    }
     if (collision[0] == true && player.ypos < ypos && collision[2] == false) {
       yspeed = -xspeed;
       collision[1] = false;
