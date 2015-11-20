@@ -20,7 +20,6 @@ void setup() {
   image(loading, 0, 0, width, height);
   loading = new PImage();
   noCursor();
-  noStroke();
   textMode(SHAPE);
   frameRate(60);
   bitmap = loadImage("Maps/bitmap.png");
@@ -31,8 +30,8 @@ void setup() {
 }
 
 void draw() {
-  weapon();
-  movement();
+  player.weapon();
+  player.movement();
   for (zombieClass zombie : zombies)
     zombie.movement();
   display();
