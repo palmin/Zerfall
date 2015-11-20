@@ -19,8 +19,8 @@ static class player {
     gunAudio[][] = new SoundFile[2][18], 
     dryfire = new SoundFile();
   timer 
-    swap = new timer(), 
-    reload = new timer();
+    swap = new timer(.2), 
+    reload = new timer(1);
   player() {
     for (int i = 0; i < gunID.length; i++) {
       gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
@@ -35,53 +35,62 @@ static class player {
   void movement() {
     for (int i = 0; i < 5; i++)
       collision[i] = false;
+    color c;
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
-        color c = bitmap.get(x, y);
-        if (c == color(255, 0, 0) || c == color(0)) {
-          collision[1] = true; //Lower bound
-          continue;
-        }
-        if (c == color(0, 0, 255)) {
-          collision[0] = true;
-          continue;
+        c = bitmap.get(x, y);
+        switch(c) {
+          case color(0, 0, 0):
+            collision[1] = true;
+            break;
+          case color(0, 0, 255):
+            collision[0] = true;
+            break;
         }
       }
     }
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y--) {
-        color c = bitmap.get(x, y);
-        if (c == color(0))
-          collision[2] = true; //Upper bound
+        c = bitmap.get(x, y);
+        switch(c) {
+          case color(0, 0, 0):
+            collision[2] = true;
+            break;
+        }
       }
     }
     for (int x = xpos + 20; x <= xpos + 25; x++) {
       for (int y = ypos; y<= ypos + 161; y++) {   
-        color c = bitmap.get(x, y);
-        if (c == color(255, 0, 0) || c == color(0))
-          collision[3] = true; //Left bound
-        if (c == color(255, 0, 0) && keys[69] == true)
-          println(c);
-        doors(x, y);
+        c = bitmap.get(x, y);
+        switch(c) {
+          case color(255, 0, 0):
+            if (keys[69] == true)
+              doors(x,y);
+          case color(0, 0, 0):
+            collision[3] = true;
+            break;
+        }
       }
     }
-    if (keys[68] == true && collision[4] == false)
-      xpos += 5;
-    if (keys[68] == true && collision[1] == true && keys[' '] == false) 
-      sprite = 2;
     for (int x = xpos + 150; x <= xpos + 155; x++) { 
       for (int y = ypos; y<= ypos + 161; y++) {   
-        color c = bitmap.get(x, y); 
+        c = bitmap.get(x, y); 
         if (collision[4] == false && (c == color(255, 0, 0) || c == color(0)))
           collision[4] = true; //Right bound
         if (c == color(255, 0, 0) && keys[69] == true)
           doors(x, y);
       }
     }
-    if (keys[65] == true && collision[3] == false)
+    if (keys[65] == true && collision[3] == false) {
       xpos -= 5;
-    if (keys[65] == true && collision[1] == true && keys[' '] == false) 
+    } else if (keys[68] == true && collision[4] == false) {
+      xpos += 5;
+    }
+    if (keys[65] == true && collision[1] == true && keys[' '] == false) {
       sprite = 0;
+    } else if (keys[68] == true && collision[1] == true && keys[' '] == false) {
+      sprite = 2;
+    }
     if (keys[87] == true && collision[2] == false) {
       if (collision[1] == true) {
         yspeed = -10;
