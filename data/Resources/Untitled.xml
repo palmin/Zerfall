@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<guns>
+    <gun name = "AK-47">
+        <id> ak </id>
+        <mode> full </mode>
+        <rpm> 600 </rpm>
+        <eti> 99 </eti>
+        <clip> 30 </clip>
+    </gun>
+    <gun name = "AUG">
+        <name> AUG </name>
+        <mode> full </mode>
+        <rpm> 715 </rpm>
+        <eti> 48 </eti>
+        <clip> 30 </clip>
+    </gun>
+    <gun name = "Dragunov">
+        <id> drgv </name>
+        <mode> semi </mode>
+        <rpm> 30 </rpm>
+        <eti> 192 </eti>
+        <clip> 10 </clip>

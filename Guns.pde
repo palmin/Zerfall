@@ -1,13 +1,13 @@
 class gun {
   SoundFile
-    gunshot = new SoundFile(),
-    reload = new SoundFile();
+    gunshot, 
+    reload;
   int
-    clip = new int(),
-    damage = new int(),
-    rate = new int();
+    clip, 
+    damage, 
+    rate;
   String
-    identifier = new String();
+    identifier;
   gun(String id) {
     identifier = id;
     gunshot = new SoundFile(Zerfall.this, "Sounds/Guns/" + identifier + " Gunshot.ogg");

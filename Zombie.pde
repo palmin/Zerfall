@@ -7,11 +7,12 @@ class zombieClass {
     ypos = 940, 
     health = 100, 
     yspeed = 1, 
-    xspeed = speed;
+    xspeed;
   boolean
     collision[] = new boolean[5];
   zombieClass(int speed) {
     sheet = loadImage("Sprites/zombie.png");
+    xspeed = speed;
   }
   void movement() {
     for (int i = 0; i < 5; i++)

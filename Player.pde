@@ -1,4 +1,4 @@
-static class player {
+class player {
   PImage 
     sheet[] = new PImage[8];
   String
@@ -17,7 +17,7 @@ static class player {
     collision[] = new boolean[5];
   SoundFile
     gunAudio[][] = new SoundFile[2][18], 
-    dryfire = new SoundFile();
+    dryfire;
   timer 
     swap = new timer(.2), 
     reload = new timer(1);
@@ -35,46 +35,45 @@ static class player {
   void movement() {
     for (int i = 0; i < 5; i++)
       collision[i] = false;
-    color c;
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
-        c = bitmap.get(x, y);
+        int c = bitmap.get(x, y);
         switch(c) {
-          case color(0, 0, 0):
-            collision[1] = true;
-            break;
-          case color(0, 0, 255):
-            collision[0] = true;
-            break;
+        case #000000:
+          collision[1] = true;
+          break;
+        case #0000FF:
+          collision[0] = true;
+          break;
         }
       }
     }
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y--) {
-        c = bitmap.get(x, y);
+        color c = bitmap.get(x, y);
         switch(c) {
-          case color(0, 0, 0):
-            collision[2] = true;
-            break;
+        case #000000:
+          //collision[2] = true;
+          break;
         }
       }
     }
     for (int x = xpos + 20; x <= xpos + 25; x++) {
       for (int y = ypos; y<= ypos + 161; y++) {   
-        c = bitmap.get(x, y);
+        int c = bitmap.get(x, y);
         switch(c) {
-          case color(255, 0, 0):
-            if (keys[69] == true)
-              doors(x,y);
-          case color(0, 0, 0):
-            collision[3] = true;
-            break;
+        case #FF0000:
+          if (keys[69] == true)
+            doors(x, y);
+        case #000000:
+          //collision[3] = true;
+          break;
         }
       }
     }
     for (int x = xpos + 150; x <= xpos + 155; x++) { 
       for (int y = ypos; y<= ypos + 161; y++) {   
-        c = bitmap.get(x, y); 
+        int c = bitmap.get(x, y);
         if (collision[4] == false && (c == color(255, 0, 0) || c == color(0)))
           collision[4] = true; //Right bound
         if (c == color(255, 0, 0) && keys[69] == true)
