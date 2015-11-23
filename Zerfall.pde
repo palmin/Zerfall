@@ -5,39 +5,41 @@ PImage
   map = new PImage(), 
   foreground = new PImage();
 boolean 
-  keys[] = new boolean[256];
+  keys[], 
+  itemsLoaded;
 PFont
   orbitron;
 ArrayList<zombieClass>
-  zombies = new ArrayList<zombieClass>();
+  zombies;
 player
   player;
+XML
+  guns;
 
 void settings() {
-  size(1280, 720, P2D);
+  fullScreen(P2D);
 }
 
 void setup() {
   PImage loading = loadImage("Images/loading.png");
   image(loading, 0, 0, width, height);
   loading = new PImage();
-  noCursor();
-  orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, width)), true);
   textMode(SHAPE);
+  noCursor();
   frameRate(60);
-  bitmap = loadImage("Maps/bitmap.png");
-  map = loadImage("Maps/map.png");
-  foreground = loadImage("Maps/foreground.png");
-  textFont(orbitron);
   player = new player();
+  zombies = new ArrayList<zombieClass>();
+  thread("loadItems");
 }
 
 void draw() {
-  player.weapon();
-  player.movement();
-  for (zombieClass zombie : zombies)
-    zombie.movement();
-  display();
+  if (itemsLoaded == true) {
+    player.weapon();
+    player.movement();
+    for (zombieClass zombie : zombies)
+      zombie.movement();
+    display();
+  }
 }
 
 void keyPressed() { 
@@ -45,4 +47,15 @@ void keyPressed() {
 }
 void keyReleased() {
   keys[keyCode] = false;
+}
+
+void loadItems() {
+  orbitron = createFont("Fonts/Orbitron.ttf", int(map(72, 0, 2560, 0, width)), true);
+  bitmap = loadImage("Maps/bitmap.png");
+  map = loadImage("Maps/map.png");
+  foreground = loadImage("Maps/foreground.png");
+  textFont(orbitron);
+  keys = new boolean[256];
+  guns = loadXML("Resources/Gun Information.xml");
+  itemsLoaded = true;
 }

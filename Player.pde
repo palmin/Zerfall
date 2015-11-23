@@ -1,8 +1,6 @@
 class player {
   PImage 
     sheet[] = new PImage[8];
-  String
-    gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", "M1928", "M60", "M9", "MP40", "PPK", "RPK", "Stoner63", "Uzi" };
   int
     sprite = 0, 
     xpos = 2270, 
@@ -21,6 +19,8 @@ class player {
   timer 
     swap = new timer(.2), 
     reload = new timer(1);
+  String 
+    gunID[] = { "AK47", "AUG", "Dragunov", "FAL", "FAMAS", "G3", "L2A3", "M1911", "M1918", "M1928", "M60", "M9", "MP40", "PPK", "RPK", "Stoner63", "Uzi" };
   player() {
     for (int i = 0; i < gunID.length; i++) {
       gunAudio[0][i] = new SoundFile(Zerfall.this, "Sounds/Guns/" + gunID[i] + " Gunshot.ogg");
@@ -37,7 +37,7 @@ class player {
       collision[i] = false;
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos + 161; y <= ypos + 162 + abs(yspeed); y++) {
-        int c = bitmap.get(x, y);
+        color c = bitmap.get(x, y);
         switch(c) {
         case #000000:
           collision[1] = true;
@@ -51,40 +51,40 @@ class player {
     for (int x = xpos + 25; x <= xpos + 150; x++) {
       for (int y = ypos; y <= ypos - 1 - abs(yspeed); y--) {
         color c = bitmap.get(x, y);
+        set(x, y, #FF0000);
         switch(c) {
         case #000000:
-          //collision[2] = true;
+          collision[2] = true;
           break;
         }
       }
     }
     for (int x = xpos + 20; x <= xpos + 25; x++) {
       for (int y = ypos; y<= ypos + 161; y++) {   
-        int c = bitmap.get(x, y);
+        color c = bitmap.get(x, y);
         switch(c) {
         case #FF0000:
           if (keys[69] == true)
             doors(x, y);
         case #000000:
-          //collision[3] = true;
+          collision[3] = true;
           break;
         }
       }
     }
     for (int x = xpos + 150; x <= xpos + 155; x++) { 
       for (int y = ypos; y<= ypos + 161; y++) {   
-        int c = bitmap.get(x, y);
+        color c = bitmap.get(x, y);
         if (collision[4] == false && (c == color(255, 0, 0) || c == color(0)))
           collision[4] = true; //Right bound
         if (c == color(255, 0, 0) && keys[69] == true)
           doors(x, y);
       }
     }
-    if (keys[65] == true && collision[3] == false) {
+    if (keys[65] == true && collision[3] == false)
       xpos -= 5;
-    } else if (keys[68] == true && collision[4] == false) {
+    if (keys[68] == true && collision[4] == false)
       xpos += 5;
-    }
     if (keys[65] == true && collision[1] == true && keys[' '] == false) {
       sprite = 0;
     } else if (keys[68] == true && collision[1] == true && keys[' '] == false) {
@@ -111,16 +111,20 @@ class player {
   }
   void doors(int x, int y) {
     color doorColor = color(255, 0, 0);
+    int w = 0;
+    int h = 0;
     while (bitmap.get(x - 1, y) == doorColor)
       x--;
     while (bitmap.get(x, y - 1) == doorColor)
       y--;
-    while (bitmap.get(x, y + 1) == doorColor) {
-      while (bitmap.get(x + 1, y) == doorColor) {
-        bitmap.set(x, y, color(255));
-        x++;
+    while (bitmap.get(x + w + 1, y) == doorColor)
+      w++;
+    while (bitmap.get(x, y + h + 1) == doorColor)
+      h++;
+    for (int x2 = x; x2 < x + w + 1; x2++) {
+      for (int y2 = y; y2 < y + h + 1; y2++) {
+        bitmap.set(x2, y2, color(255));
       }
-      y++;
     }
   }
   void weapon() {

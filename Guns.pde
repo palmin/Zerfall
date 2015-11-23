@@ -7,9 +7,12 @@ class gun {
     damage, 
     rate;
   String
-    identifier;
-  gun(String id) {
-    identifier = id;
+    name;
+  gun(String n, int r, int e, int c) {
+    name = n;
+    rate = r;
+    damage = e;
+    clip = c;
     gunshot = new SoundFile(Zerfall.this, "Sounds/Guns/" + identifier + " Gunshot.ogg");
     reload = new SoundFile(Zerfall.this, "Sounds/Guns/" + identifier + " Gunshot.ogg");
   }
