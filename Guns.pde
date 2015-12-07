@@ -14,6 +14,6 @@ class gun {
     damage = e;
     clip = c;
     gunshot = new SoundFile(Zerfall.this, "Sounds/Guns/" + identifier + " Gunshot.ogg");
-    reload = new SoundFile(Zerfall.this, "Sounds/Guns/" + identifier + " Reloadt.ogg");
+    reload = new SoundFile(Zerfall.this, "Sounds/Guns/" + identifier + " Reload.ogg");
   }
 }
